@@ -1,0 +1,14 @@
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.Business\bin\Debug\netcoreapp3.1\ArticlesWeb.Business.deps.json
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.Business\bin\Debug\netcoreapp3.1\ArticlesWeb.Business.dll
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.Business\bin\Debug\netcoreapp3.1\ArticlesWeb.Business.pdb
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.Business\bin\Debug\netcoreapp3.1\ArticlesWeb.Entities.dll
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.Business\bin\Debug\netcoreapp3.1\ArticlesWeb.Repository.dll
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.Business\bin\Debug\netcoreapp3.1\ArticlesWeb.Repository.pdb
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.Business\bin\Debug\netcoreapp3.1\ArticlesWeb.Entities.pdb
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.Business\obj\Debug\netcoreapp3.1\ArticlesWeb.Business.csprojAssemblyReference.cache
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.Business\obj\Debug\netcoreapp3.1\ArticlesWeb.Business.AssemblyInfoInputs.cache
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.Business\obj\Debug\netcoreapp3.1\ArticlesWeb.Business.AssemblyInfo.cs
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.Business\obj\Debug\netcoreapp3.1\ArticlesWeb.Business.csproj.CoreCompileInputs.cache
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.Business\obj\Debug\netcoreapp3.1\ArticlesWeb.Business.csproj.CopyComplete
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.Business\obj\Debug\netcoreapp3.1\ArticlesWeb.Business.dll
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.Business\obj\Debug\netcoreapp3.1\ArticlesWeb.Business.pdb

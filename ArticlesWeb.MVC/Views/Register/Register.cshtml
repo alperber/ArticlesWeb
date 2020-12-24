@@ -1,0 +1,14 @@
+﻿@model ArticlesWeb.Business.Results.IResult
+
+
+@{
+    if (Model.Success)
+    {
+        <h1 class="alert-success">BAŞARILI</h1>
+    }
+    else
+    {
+        <h1 class="alert-warning">OLMADI</h1>
+        <p>@Model.Message</p>
+    }
+}

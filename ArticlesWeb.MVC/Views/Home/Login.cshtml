@@ -1,0 +1,11 @@
+﻿@using ArticlesWeb.Entities.RequestModels
+@{
+    string name = "Dostum";
+
+    if (TempData.ContainsKey("name"))
+    {
+        name = TempData["name"] as string;
+    }
+}
+
+<h4>Hoşgeldin @name</h4>

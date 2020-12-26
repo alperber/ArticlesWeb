@@ -83,5 +83,5 @@ C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\bin\Debug\netcoreapp3.
 C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\bin\Debug\netcoreapp3.1\ArticlesWeb.Business.pdb
 C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\bin\Debug\netcoreapp3.1\ArticlesWeb.Entities.pdb
 C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\bin\Debug\netcoreapp3.1\ArticlesWeb.Repository.pdb
-C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\obj\Debug\netcoreapp3.1\Razor\Views\Register\Index.cshtml.g.cs
-C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\obj\Debug\netcoreapp3.1\Razor\Views\Register\Register.cshtml.g.cs
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\obj\Debug\netcoreapp3.1\Razor\Views\Home\Login.cshtml.g.cs
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\obj\Debug\netcoreapp3.1\Razor\Views\Home\Register.cshtml.g.cs

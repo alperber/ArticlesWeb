@@ -1,47 +1,43 @@
-﻿@{
+﻿@using System.Security.Claims
+@model List<ArticlesWeb.Entities.DbEntities.Post>
+@{
+    
     ViewData["Title"] = "Home Page";
-    string name = "Dostum";
-    if (TempData["name"] != null)
-    {
-        name = (string)TempData["name"];
-    }
+
 }
 
 <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto">
-        <div class="post-preview">
-          <a href="post.html">
-            <h2 class="post-title">
-              Post Title
-            </h2>
-            <h3 class="post-subtitle">
-              We predict too much for the next year and yet far too little for the next ten.
-            </h3>
-          </a>
-          <p class="post-meta">Posted by
-              <a href="#">@name</a>
-            on August 24, 2019</p>
-            <p class="post-meta">2 Beğeni - 1 Yorum</p>
-        </div>
-        <hr>
-        <div class="post-preview">
-          <a href="post.html">
-            <h2 class="post-title">
-              Failure is not an option
-            </h2>
-            <h3 class="post-subtitle">
-              Many say exploration is part of our destiny, but it’s actually our duty to future generations.
-            </h3>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="#">Start Bootstrap</a>
-            on July 8, 2019</p>
-            <p class="post-meta">2 Beğeni - 1 Yorum</p>
-        </div>
-        <hr>
-        <!-- Pager -->
-        <div class="clearfix">
-          <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
-        </div>
-      </div>
+    <div class="col-lg-8 col-md-10 mx-auto">
+        @{
+            if (Model.Count == 0)
+            {
+                <div class="alert alert-info">
+                    <h2>Henüz bir makale yok :( @String.Concat(User.Claims.Where(x => x.Type == ClaimTypes.Role)) </h2>
+                </div>
+            }
+            else
+            {
+                foreach (var post in Model)
+                {
+                    <hr>
+                    <div class="post-preview">
+                        <a href="/Post/Details/@post.PostId">
+                            <h2 class="post-title">
+                                @post.Title
+                            </h2>
+                            <h3 class="post-subtitle">
+                                @post.Text
+                            </h3>
+                        </a>
+                        <p class="post-meta">
+                            Posted by
+                            <a href="/User/Details/@post.User.UserId">@post.User.Username</a>
+                            on @post.CreatedAt.ToShortDateString()
+                        </p>
+                        <p class="post-meta">@post.CommentCount Yorum</p>
+                    </div>
+                }
+            }
+        }
+    </div>
     </div>

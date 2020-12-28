@@ -8,6 +8,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using ArticlesWeb.Business.Abstract;
 using ArticlesWeb.Entities.RequestModels;
+using ArticlesWeb.Repository;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace ArticlesWeb.MVC.Controllers
 {
@@ -15,17 +19,19 @@ namespace ArticlesWeb.MVC.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUserService _userService;
+        private readonly IPostService _postService;
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService)
+        public HomeController(ILogger<HomeController> logger, IUserService userService, ArticlesContext context, IPostService postService)
         {
             _logger = logger;
             _userService = userService;
+            _postService = postService;
         }
 
         public IActionResult Index()
         {
             _logger.LogInformation("GET /Home/Index");
-            return View();
+            return View(_postService.GetPosts().Data);
         }
 
         public IActionResult Register()
@@ -49,11 +55,28 @@ namespace ArticlesWeb.MVC.Controllers
             return RedirectToAction(nameof(Register));
         }
 
-        public IActionResult Login()
+        [Authorize(Roles = "User, Admin")]
+        public async Task<IActionResult> Login()
         {
             _logger.LogInformation("GET /Home/Login");
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(UserLoginModel user)
+        {
+            _logger.LogInformation("POST /Home/Login");
+            var response = await _userService.SignInAsync(user, HttpContext);
+            if (response.Success)
+            {
+                TempData["name"] = user.Username;
+                return RedirectToAction(nameof(Index));
+            }
+
+            TempData["Error"] = response.Message;
+            return RedirectToAction(nameof(Login));
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

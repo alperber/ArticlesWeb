@@ -12,6 +12,7 @@ using ArticlesWeb.Business.Concrete;
 using ArticlesWeb.Repository;
 using ArticlesWeb.Repository.Abstract;
 using ArticlesWeb.Repository.Concrete;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArticlesWeb.MVC
@@ -35,6 +36,15 @@ namespace ArticlesWeb.MVC
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    // giriþ yapmasý için
+                    options.LoginPath = "/Home/Login";
+                });
+
+            // View'da httpcontext'e eriþebilmek için
+            services.AddHttpContextAccessor();
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
@@ -55,6 +65,7 @@ namespace ArticlesWeb.MVC
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using ArticlesWeb.Business.Abstract;
+using ArticlesWeb.Business.Helpers;
 using ArticlesWeb.Business.Results;
 using ArticlesWeb.Entities.DbEntities;
 using ArticlesWeb.Entities.RequestModels;
@@ -25,18 +26,7 @@ namespace ArticlesWeb.Business.Concrete
 
         public IResult Register(UserRegisterModel user)
         {
-            User newUser = new User()
-            {
-                Username = user.Username,
-                Password = user.Password,
-                Email = user.Email,
-                Fullname = user.Fullname,
-                Birthday = user.BirthDate,
-                PostCount = 0,
-                About = user.About,
-                RegistrationDate = DateTime.Now,
-                isAdmin = false
-            };
+            User newUser = UserHelper.CreateUser(user);
             try
             {
                 _repository.Add(newUser);
@@ -60,6 +50,7 @@ namespace ArticlesWeb.Business.Concrete
 
             var claims = new List<Claim>
             {
+                new Claim(ClaimTypes.Sid, result.UserId.ToString()),
                 new Claim(ClaimTypes.Name, result.Username),
                 new Claim(ClaimTypes.Role, "User")
             };
@@ -72,7 +63,46 @@ namespace ArticlesWeb.Business.Concrete
             var userIdentity = new ClaimsIdentity(claims, "Login");
             var principal = new ClaimsPrincipal(userIdentity);
             await httpContext.SignInAsync(principal);
+
             return new SuccessResult();
+        }
+
+        public async Task<IResult> SignOutAsync(HttpContext httpContext)
+        {
+            await httpContext.SignOutAsync();
+            return new SuccessResult();
+        }
+
+        public IDataResult<User> GetUserDetailsById(int userId)
+        {
+            return new SuccessDataResult<User>(_repository.Get(u => u.UserId == userId));
+        }
+
+        public IDataResult<User> GetUserDetailsByUsername(string username)
+        {
+            return new SuccessDataResult<User>(_repository.Get(u => u.Username == username));
+        }
+
+        public IResult DeleteUserById(int userId)
+        {
+            var user = _repository.Get(u => u.UserId == userId);
+
+            if (user == null)
+            {
+                return new ErrorResult(Messages.UserDoesntExists);
+            }
+            _repository.Delete(user);
+            return new SuccessResult(Messages.UserDeleted);
+        }
+
+        public IResult IncrementPostCount(int userId)
+        {
+            bool result = _repository.IncrementPostCount(userId);
+
+            if(result) 
+                return  new SuccessResult();
+
+            return new ErrorResult(Messages.UserDoesntExists);
         }
     }
 }

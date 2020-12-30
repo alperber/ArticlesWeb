@@ -25,7 +25,7 @@ namespace ArticlesWeb.Repository.Concrete
             return _context.Set<TEntity>().Where(filterExpression).FirstOrDefault();
         }
 
-        public List<TEntity> GetList(Expression<Func<TEntity, bool>> filterExpression = null)
+        public virtual List<TEntity> GetList(Expression<Func<TEntity, bool>> filterExpression = null)
         {
             return filterExpression == null
                 ? _context.Set<TEntity>().ToList()

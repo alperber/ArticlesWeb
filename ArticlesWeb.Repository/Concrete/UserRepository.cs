@@ -14,5 +14,17 @@ namespace ArticlesWeb.Repository.Concrete
         public UserRepository(ArticlesContext context) : base(context)
         {
         }
+
+        public bool IncrementPostCount(int userId)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+
+            if (user == null)
+                return false;
+
+            user.PostCount += 1;
+            _context.SaveChanges();
+            return true;
+        }
     }
 }

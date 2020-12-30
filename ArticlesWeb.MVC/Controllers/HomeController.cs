@@ -17,33 +17,34 @@ namespace ArticlesWeb.MVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IUserService _userService;
         private readonly IPostService _postService;
 
         public HomeController(ILogger<HomeController> logger, IUserService userService, ArticlesContext context, IPostService postService)
         {
-            _logger = logger;
             _userService = userService;
             _postService = postService;
         }
 
         public IActionResult Index()
         {
-            _logger.LogInformation("GET /Home/Index");
-            return View(_postService.GetPosts().Data);
+            var response = _postService.GetAllPostsWithUser();
+
+            if (!response.Success)
+            {
+                // 404 error
+            }
+            return View(response.Data);
         }
 
         public IActionResult Register()
         {
-            _logger.LogInformation("GET /Home/Register");
             return View();
         }
 
         [HttpPost]
         public IActionResult Register(UserRegisterModel user)
         {
-            _logger.LogInformation("POST /Home/Register");
             var response = _userService.Register(user);
 
             if (response.Success)
@@ -55,17 +56,14 @@ namespace ArticlesWeb.MVC.Controllers
             return RedirectToAction(nameof(Register));
         }
 
-        [Authorize(Roles = "User, Admin")]
-        public async Task<IActionResult> Login()
+        public IActionResult Login()
         {
-            _logger.LogInformation("GET /Home/Login");
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(UserLoginModel user)
         {
-            _logger.LogInformation("POST /Home/Login");
             var response = await _userService.SignInAsync(user, HttpContext);
             if (response.Success)
             {
@@ -77,11 +75,17 @@ namespace ArticlesWeb.MVC.Controllers
             return RedirectToAction(nameof(Login));
         }
 
+        [Authorize]
+        public async Task<IActionResult> SignOut()
+        {
+            await _userService.SignOutAsync(HttpContext);
+
+            return RedirectToAction(nameof(Index));
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            _logger.LogInformation("GET /Home/Error");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

@@ -4,13 +4,20 @@ using System.Linq.Expressions;
 using System.Text;
 using ArticlesWeb.Business.Results;
 using ArticlesWeb.Entities.DbEntities;
+using ArticlesWeb.Entities.RequestModels;
 
 namespace ArticlesWeb.Business.Abstract
 {
     public interface IPostService
     {
-        IDataResult<List<Post>> GetPosts(Expression<Func<Post, bool>> filterExpression = null);
-        IDataResult<Post> GetPost(int postId);
+        IResult AddPost(PostAddModel post);
+        IDataResult<List<Post>> GetAllPosts();
+        IDataResult<List<Post>> GetPostsByUserId(int userId);
+        IDataResult<List<Post>> GetPostsByUsername(string username);
+        IDataResult<Post> GetPostById(int postId);
         IResult IncrementCommentCount(int postId);
+        IResult DeletePostById(int postId);
+        IDataResult<List<Post>> GetAllPostsWithUser();
+        IDataResult<Post> GetPostWithUser(int postId);
     }
 }

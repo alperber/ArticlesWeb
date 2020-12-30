@@ -1,0 +1,22 @@
+﻿@{
+    Layout = "_Layout2";
+}
+<hr/>
+<form method="post" asp-controller="Posts" asp-action="AddPost">
+
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Title</label>
+        <input name="Title" type="text" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">Text</label>
+        <textarea name="Text" class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+    </div>
+
+    <button id="gonder" type="submit" class="btn btn-primary">Submit</button>
+
+</form>
+
+<script>
+    /// validation yapilacak
+</script>

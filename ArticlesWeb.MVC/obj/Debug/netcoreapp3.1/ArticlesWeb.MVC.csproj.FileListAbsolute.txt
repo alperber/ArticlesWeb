@@ -85,3 +85,6 @@ C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\bin\Debug\netcoreapp3.
 C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\obj\Debug\netcoreapp3.1\Razor\Views\Home\Login.cshtml.g.cs
 C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\obj\Debug\netcoreapp3.1\Razor\Views\Home\Register.cshtml.g.cs
 C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout2.cshtml.g.cs
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\obj\Debug\netcoreapp3.1\Razor\Views\Posts\AddPost.cshtml.g.cs
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\obj\Debug\netcoreapp3.1\Razor\Views\Posts\Details.cshtml.g.cs
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\obj\Debug\netcoreapp3.1\Razor\Views\Users\Details.cshtml.g.cs

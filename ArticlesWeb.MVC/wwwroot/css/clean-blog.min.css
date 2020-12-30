@@ -249,9 +249,14 @@ header.masthead .post-heading .meta a {
   margin-top: 30px;
   margin-bottom: 10px;
 }
-.post-preview > a > .post-subtitle {
-  font-weight: 300;
+.post-preview > .post-subtitle {
+  font-weight: 200;
   margin: 0 0 10px;
+}
+.devamini-oku {
+    margin-left: 10px;
+    color: brown;
+    font-weight: bold;
 }
 .post-preview > .post-meta {
   font-size: 18px;

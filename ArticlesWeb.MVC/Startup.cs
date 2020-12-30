@@ -39,7 +39,6 @@ namespace ArticlesWeb.MVC
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    // giriþ yapmasý için
                     options.LoginPath = "/Home/Login";
                 });
 
@@ -48,6 +47,9 @@ namespace ArticlesWeb.MVC
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
+
+            services.AddTransient<IPostRepository, PostRepository>();
+            services.AddTransient<IPostService, PostService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

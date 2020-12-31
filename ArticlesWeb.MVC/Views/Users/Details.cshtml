@@ -1,16 +1,82 @@
-﻿@model ArticlesWeb.Entities.DbEntities.User
+﻿@using System.Security.Claims
+@model ArticlesWeb.Entities.DbEntities.User
+@inject ArticlesWeb.Business.Abstract.IPostService PostService
 @{
     Layout = "_Layout2";
+
+    int userId = Model.UserId;
+
+    var posts = PostService.GetPostsByUserId(userId);
+
+
+    bool isSelfPage = false;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        int currentUserId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value);
+        isSelfPage = currentUserId == userId;
+    }
+
 }
 
 
 <div>
     <h5>@Model.Username</h5>
     <br />
+    @{
+        if (isSelfPage)
+        {
+            <div style="font-size: medium">
+                <a style="color: red" asp-controller="Home" asp-action="EditProfile">Profili Düzenle</a>
+            </div>
+        }
+    }
     <br />
     <h2>Hakkımda</h2>
     <p>@Model.About</p>
 </div>
 
+<div>
+    <h2>Bu Kullanıcının Makaleleri</h2>
+    @{
+        if (posts.Data.Count == 0)
+        {
+            <hr/>
+            <div class="alert alert-info">
+                <h2>Bu kullanıcının henüz bir makalesi yok :( </h2>
+            </div>
+        }
+        else
+        {
+            foreach (var post in posts.Data)
+            {
+                <hr>
+                <div class="post-preview">
+                    <a href="/Posts/Details/@post.PostId">
+                        <h2 class="post-title">
+                            @post.Title
+                        </h2>
+                    </a>
+                    <h3 class="post-subtitle">
+                        @if (post.Text.Length > 200)
+                        {
+                            @post.Text.Substring(0, 200)
+                            <a href="/Posts/Details/@post.PostId" class="devamini-oku">Devamını Oku</a>
+                        }
+                        else
+                        {
+                            @post.Text;
+                        }
+                    </h3>
+                    <p class="post-meta">
+                        Posted by
+                        <a href="/Users/Details/@post.UserId">@post.User.Username</a>
+                        on @post.CreatedAt.ToShortDateString()
+                    </p>
+                    <p class="post-meta">@post.CommentCount Yorum</p>
+                </div>
+            }
+        }
+    }
+</div>
 
-<!--  burada da foreach ile user'a ait postlar dönülecek ---->

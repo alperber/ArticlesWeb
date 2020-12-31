@@ -1,5 +1,22 @@
-﻿@{
+﻿@model ArticlesWeb.Entities.DbEntities.User
+@{
     Layout = "_Layout2";
+
+    string error = null;
+
+    if (TempData.ContainsKey("RegisterError"))
+    {
+        error = TempData["RegisterError"] as string;
+    }
+}
+
+@{
+    if (!String.IsNullOrEmpty(error))
+    {
+        <div class="alert alert-danger" role="alert">
+            @error
+        </div>
+    }
 }
 <form method="post" asp-controller="Home" asp-action="Register">
     

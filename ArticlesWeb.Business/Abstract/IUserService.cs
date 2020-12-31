@@ -18,5 +18,9 @@ namespace ArticlesWeb.Business.Abstract
         IDataResult<User> GetUserDetailsByUsername(string username);
         IResult DeleteUserById(int userId);
         IResult IncrementPostCount(int userId);
+        IResult UpdateUser(UserUpdateModel user);
+        IResult CheckIfEmailExists(string email);
+        IResult CheckIfUsernameExists(string username);
+
     }
 }

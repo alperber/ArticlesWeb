@@ -1,8 +1,14 @@
 ﻿@using System.Security.Claims
 @{
     bool isAdmin = false;
+    string username = null;
+    int userId = 0;
     if (User.Identity.IsAuthenticated)
     {
+        username = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+
+        userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid)?.Value);
+
         var claims = User.Claims.Where(c => c.Type == ClaimTypes.Role);
         foreach (var claim in claims)
         {
@@ -18,141 +24,141 @@
 <html lang="en">
 <head>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <title>Articles</title>
+    <title>Articles</title>
 
-  <!-- Bootstrap core CSS -->
-  <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Custom fonts for this template -->
-  <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <!-- Custom fonts for this template -->
+    <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 
-  <!-- Custom styles for this template -->
-  <link href="~/css/clean-blog.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="~/css/clean-blog.min.css" rel="stylesheet">
 
 </head>
 <body>
 
     <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand" asp-controller="Home" asp-action="Index">Articles</a>
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        Menu
-        <i class="fas fa-bars"></i>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                  <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-              </li>
-              @{
-                  if (!User.Identity.IsAuthenticated)
-                  {
-                      <li class="nav-item">
-                          <a class="nav-link" asp-controller="Home" asp-action="Login">Login</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" asp-controller="Home" asp-action="Register">Register</a>
-                      </li>
-                  }
-                  else
-                  {
-                      if (isAdmin)
-                      {
-                          <li class="nav-item">
-                              <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Paneli</a>
-                          </li>
-                      }
-                      <li class="nav-item">
-                          <a class="nav-link" asp-controller="Posts" asp-action="AddPost">Share Article</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" asp-controller="Home" asp-action="Index">Merhaba @User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" asp-controller="Home" asp-action="SignOut">Logout</a>
-                      </li>
-                  }
-              }
-          </ul>
-      </div>
-    </div>
-  </nav>
-  
-  <!-- Page Header -->
-  <header class="masthead" style="background-image: url('img/home-bg.jpg')">
-    <div class="overlay"></div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="site-heading">
-            <h1>Where good ideas find you</h1>
-            <span class="subheading">A Blog Theme by Start Bootstrap</span>
-          </div>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">Articles</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    @{
+                        if (!User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="Register">Register</a>
+                            </li>
+                        }
+                        else
+                        {
+                            if (isAdmin)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Paneli</a>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Posts" asp-action="AddPost">Share Article</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="Users/Details/@userId">Merhaba @username</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="SignOut">Logout</a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
         </div>
-      </div>
-    </div>
-  </header>
-    <br/>	
+    </nav>
+
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('img/home-bg.jpg')">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <div class="site-heading">
+                        <h1>Where good ideas find you</h1>
+                        <span class="subheading">A Blog Theme by Start Bootstrap</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <br />
 
     <div class="container">
-            @RenderBody()
+        @RenderBody()
     </div>
 
     <hr>
 
-<!-- Footer -->
-  <footer>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <ul class="list-inline text-center">
-            <li class="list-inline-item">
-              <a href="#">
-                <span class="fa-stack fa-lg">
-                  <i class="fas fa-circle fa-stack-2x"></i>
-                  <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
-                </span>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="#">
-                <span class="fa-stack fa-lg">
-                  <i class="fas fa-circle fa-stack-2x"></i>
-                  <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
-                </span>
-              </a>
-            </li>
-            <li class="list-inline-item">
-              <a href="#">
-                <span class="fa-stack fa-lg">
-                  <i class="fas fa-circle fa-stack-2x"></i>
-                  <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                </span>
-              </a>
-            </li>
-          </ul>
-          <p class="copyright text-muted">Articles 2020</p>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item">
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">Articles 2020</p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </footer>
-  
-  
-	<!-- Bootstrap core JavaScript -->
-  <script src="~/vendor/jquery/jquery.min.js"></script>
-  <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    </footer>
 
-  <!-- Custom scripts for this template -->
-  <script src="~/js/clean-blog.min.js" asp-append-version="true"></script>
-  
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="~/js/clean-blog.min.js" asp-append-version="true"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

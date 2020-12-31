@@ -27,11 +27,15 @@
                             </h2>
                         </a>
                         <h3 class="post-subtitle">
-                            @post.Text.Substring(0, 200)
                             @if (post.Text.Length > 200)
-                                {
-                                    <a href="/Posts/Details/@post.PostId" class="devamini-oku">Devamını Oku</a>
-                                }
+                            {
+                                @post.Text.Substring(0, 200)
+                                <a href="/Posts/Details/@post.PostId" class="devamini-oku">Devamını Oku</a>
+                            }
+                            else
+                            {
+                                @post.Text
+                            }
                         </h3>
                         <p class="post-meta">
                             Posted by

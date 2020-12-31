@@ -11,6 +11,7 @@ namespace ArticlesWeb.Repository.Abstract
         TEntity Get(Expression<Func<TEntity, bool>> filterExpression);
         List<TEntity> GetList(Expression<Func<TEntity, bool>> filterExpression = null);
         void Delete(TEntity entity);
+        void DeleteRange(IEnumerable<TEntity> entities);
         void Update(TEntity entity);
     }
 }

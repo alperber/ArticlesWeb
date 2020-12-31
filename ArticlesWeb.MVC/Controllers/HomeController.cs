@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ArticlesWeb.Business.Abstract;
 using ArticlesWeb.Entities.RequestModels;
@@ -50,9 +51,11 @@ namespace ArticlesWeb.MVC.Controllers
             if (response.Success)
             {
                 // kayıt başarılı oldu ise login sayfasına yönlendir
-                TempData["name"] = user.Fullname;
+                TempData["RegisterSuccessful"] = response.Message;
                 return RedirectToAction(nameof(Login));
             }
+
+            TempData["RegisterError"] = response.Message;
             return RedirectToAction(nameof(Register));
         }
 
@@ -81,6 +84,38 @@ namespace ArticlesWeb.MVC.Controllers
             await _userService.SignOutAsync(HttpContext);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [Authorize]
+        public IActionResult EditProfile()
+        {
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value);
+
+            var user = _userService.GetUserDetailsById(userId);
+
+            return View(user.Data);
+        }
+
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult EditProfile(UserUpdateModel user)
+        {
+            user.UserId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value);
+
+            var response = _userService.UpdateUser(user);
+
+            if (!response.Success)
+            {
+                TempData["UpdateError"] = response.Message;
+                return RedirectToAction(nameof(EditProfile));
+            }
+
+            // RedirectToAction with parameter
+            return RedirectToAction("Details","Users" ,new
+            {
+                userId = user.UserId
+            });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

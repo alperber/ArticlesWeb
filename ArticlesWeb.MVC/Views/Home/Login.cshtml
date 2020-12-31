@@ -3,10 +3,15 @@
     Layout = "_Layout2";
 
     string error = String.Empty;
+    string message = String.Empty;
 
     if (TempData.ContainsKey("Error"))
     {
         error = TempData["Error"] as string;
+    }
+    if (TempData.ContainsKey("RegisterSuccessful"))
+    {
+        message = TempData["RegisterSuccessful"] as string;
     }
 }
 
@@ -14,6 +19,12 @@
 {
     <div class="alert alert-danger" role="alert">
         @error
+    </div>
+}
+@if (!String.IsNullOrEmpty(message))
+{
+    <div class="alert alert-success" role="alert">
+        @message
     </div>
 }
 

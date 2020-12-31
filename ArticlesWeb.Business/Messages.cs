@@ -13,5 +13,8 @@ namespace ArticlesWeb.Business
         public static string UserDoesntExists = "Kullanıcı Bulunamadı";
         public static string PostDoesntExists = "Post Bulunamadı";
         public static string PostDeleted = "Post Başarıyla Silindi";
+        public static string UserDoesntHavePost = "Kullanıcıya Ait Post Bulunamadı";
+        public static string EmailAlreadyExists = "Bu Email Zaten Kullanılıyor";
+        public static string UsernameAlreadyExists = "Bu Kullanıcı Adı Zaten Kullanılıyor";
     }
 }

@@ -26,6 +26,12 @@ namespace ArticlesWeb.Business.Concrete
 
         public IResult Register(UserRegisterModel user)
         {
+            IResult check = CheckIfUsernameExists(user.Username);
+            if (check.Success) return new ErrorResult(check.Message);
+
+            check = CheckIfEmailExists(user.Email);
+            if (check.Success) return new ErrorResult(check.Message);
+
             User newUser = UserHelper.CreateUser(user);
             try
             {
@@ -103,6 +109,47 @@ namespace ArticlesWeb.Business.Concrete
                 return  new SuccessResult();
 
             return new ErrorResult(Messages.UserDoesntExists);
+        }
+
+        public IResult UpdateUser(UserUpdateModel user)
+        {
+            User oldUser = _repository.Get(u => u.UserId == user.UserId);
+
+            if (oldUser.Username != user.Username)
+            {
+                IResult check1 = CheckIfUsernameExists(user.Username);
+                if (check1.Success) return new ErrorResult(check1.Message);
+            }
+
+            if (oldUser.Email != user.Email)
+            {
+                IResult check2 = CheckIfEmailExists(user.Email);
+                if (check2.Success) return new ErrorResult(check2.Message);
+            }
+
+            User newUser = UserHelper.UpdatedUser(user, oldUser);
+            _repository.Update(newUser);
+            return new SuccessResult();
+        }
+
+        public IResult CheckIfEmailExists(string email)
+        {
+            var user = _repository.Get(u => u.Email == email);
+            if (user == null)
+            {
+                return new ErrorResult();
+            }
+            return new SuccessResult(Messages.EmailAlreadyExists);
+        }
+
+        public IResult CheckIfUsernameExists(string username)
+        {
+            var user = _repository.Get(u => u.Username == username);
+            if (user == null)
+            {
+                return new ErrorResult();
+            }
+            return new SuccessResult(Messages.UsernameAlreadyExists);
         }
     }
 }

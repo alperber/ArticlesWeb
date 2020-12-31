@@ -23,5 +23,21 @@ namespace ArticlesWeb.Business.Helpers
                 isAdmin = false
             };
         }
+        public static User UpdatedUser(UserUpdateModel user, User oldUser)
+        {
+            return new User
+            {
+                Username = user.Username,
+                About = user.About,
+                Birthday = user.Birthday,
+                Email = user.Email,
+                Fullname = user.Fullname,
+                Password = user.Password,
+                PostCount = oldUser.PostCount,
+                RegistrationDate = oldUser.RegistrationDate,
+                UserId = oldUser.UserId,
+                isAdmin = oldUser.isAdmin
+            };
+        }
     }
 }

@@ -88,3 +88,4 @@ C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\obj\Debug\netcoreapp3.
 C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\obj\Debug\netcoreapp3.1\Razor\Views\Posts\AddPost.cshtml.g.cs
 C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\obj\Debug\netcoreapp3.1\Razor\Views\Posts\Details.cshtml.g.cs
 C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\obj\Debug\netcoreapp3.1\Razor\Views\Users\Details.cshtml.g.cs
+C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.MVC\obj\Debug\netcoreapp3.1\Razor\Views\Home\EditProfile.cshtml.g.cs

@@ -90,5 +90,35 @@ namespace ArticlesWeb.Business.Concrete
         {
             throw new NotImplementedException();
         }
+
+        public IResult DeletePost(int postId)
+        {
+            try
+            {
+                var post = _repository.Get(p => p.PostId == postId);
+
+                if (post == null)
+                {
+                    return new ErrorResult(Messages.PostDoesntExists);
+                }
+                _repository.Delete(post);
+                return new SuccessResult(Messages.PostDeleted);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(e.Message);
+            }
+        }
+
+        public IResult DeleteUserOwnedPosts(int userId)
+        {
+            var posts = _repository.GetList(p => p.UserId == userId);
+            if (posts.Count == 0)
+            {
+                return new ErrorResult(Messages.UserDoesntHavePost);
+            }
+            _repository.DeleteRange(posts);
+            return new SuccessResult();
+        }
     }
 }

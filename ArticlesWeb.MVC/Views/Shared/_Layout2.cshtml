@@ -76,7 +76,7 @@
                                     <a class="nav-link" asp-controller="Posts" asp-action="AddPost">Share Article</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Home"  asp-action="Index">Merhaba @User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value</a>
+                                    <a class="nav-link" asp-controller="Home" asp-action="Index">Merhaba @User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" asp-controller="Home" asp-action="SignOut">Logout</a>

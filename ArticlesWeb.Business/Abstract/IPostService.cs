@@ -19,5 +19,7 @@ namespace ArticlesWeb.Business.Abstract
         IResult DeletePostById(int postId);
         IDataResult<List<Post>> GetAllPostsWithUser();
         IDataResult<Post> GetPostWithUser(int postId);
+        IResult DeletePost(int postId);
+        IResult DeleteUserOwnedPosts(int userId);
     }
 }

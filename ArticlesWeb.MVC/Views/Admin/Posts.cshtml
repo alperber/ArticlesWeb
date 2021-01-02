@@ -1,1 +1,42 @@
-﻿@model List<ArticlesWeb.Entities.DbEntities.Post>
+﻿@using System.Globalization
+@model List<ArticlesWeb.Entities.DbEntities.Post>
+@{
+    Layout = "_LayoutAdmin";
+
+    string message = TempData.ContainsKey("Message") ? TempData["Message"] as string : null;
+}
+
+@{
+    if (!String.IsNullOrEmpty(message))
+    {
+        <div class="alert alert-primary" role="alert">
+            @message
+        </div>
+    }
+}
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Owner Username</th>
+            <th scope="col">Owner Email</th>
+            <th scope="col">Comment Count</th>
+            <th scope="col">Created At</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var post in Model)
+    {
+        <tr>
+            <td>@post.Title</td>
+            <td>@post.User.Username</td>
+            <td>@post.User.Email</td>
+            <td>@post.CommentCount</td>
+            <td>@post.CreatedAt.ToString(CultureInfo.InvariantCulture)</td>
+            <td><a href="/Admin/DeletePost/@post.PostId" class="btn btn-danger">Delete</a></td>
+        </tr>
+    }
+    </tbody>
+</table>

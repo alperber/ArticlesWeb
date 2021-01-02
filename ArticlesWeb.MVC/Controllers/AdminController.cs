@@ -66,5 +66,16 @@ namespace ArticlesWeb.MVC.Controllers
 
             return RedirectToAction(nameof(Users));
         }
+
+        [Route("/Admin/DeletePost/{postId}")]
+        public IActionResult DeletePost(int postId)
+        {
+            var response = _postService.DeletePostById(postId);
+
+            TempData["Message"] = response.Message;
+
+            return RedirectToAction(nameof(Posts));
+        }
+
     }
 }

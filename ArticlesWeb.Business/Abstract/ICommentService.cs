@@ -12,5 +12,6 @@ namespace ArticlesWeb.Business.Abstract
         IDataResult<List<Comment>> GetCommentsByPostId(int postId);
         public IResult AddComment(CommentAddModel comment);
         IResult DeleteComment(int commentId);
+        IResult DeleteCommentsOnPost(int postId);
     }
 }

@@ -12,8 +12,11 @@ using ArticlesWeb.Entities.RequestModels;
 using ArticlesWeb.Repository;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace ArticlesWeb.MVC.Controllers
 {
@@ -21,11 +24,13 @@ namespace ArticlesWeb.MVC.Controllers
     {
         private readonly IUserService _userService;
         private readonly IPostService _postService;
+        private readonly IStringLocalizer<HomeController> _localizer;
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService, ArticlesContext context, IPostService postService)
+        public HomeController(IUserService userService, IPostService postService, IStringLocalizer<HomeController> localizer)
         {
             _userService = userService;
             _postService = postService;
+            _localizer = localizer;
         }
 
         public IActionResult Index()
@@ -121,6 +126,18 @@ namespace ArticlesWeb.MVC.Controllers
             {
                 userId = user.UserId
             });
+        }
+
+        [HttpPost]
+        public IActionResult ChangeCulture(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions
+                {
+                    Expires = DateTimeOffset.Now.AddDays(30)
+                });
+            return LocalRedirect(returnUrl);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

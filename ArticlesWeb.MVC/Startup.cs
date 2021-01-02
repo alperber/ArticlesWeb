@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace ArticlesWeb.MVC
 {
@@ -65,12 +66,24 @@ namespace ArticlesWeb.MVC
                 .AddMvc()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
+
+            services.Configure<RequestLocalizationOptions>(opt =>
+            {
+                var supportedCulture = new List<CultureInfo>
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("tr-TR")
+                };
+                opt.DefaultRequestCulture = new RequestCulture("en-US");
+                opt.SupportedCultures = supportedCulture;
+                opt.SupportedUICultures = supportedCulture;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (!env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -80,18 +93,9 @@ namespace ArticlesWeb.MVC
             }
             app.UseStaticFiles();
 
-            var supportedCulture = new List<CultureInfo>
-            {
-                new CultureInfo("en-US"),
-                new CultureInfo("tr-TR")
-            };
 
-            app.UseRequestLocalization(new RequestLocalizationOptions
-            {
-                SupportedCultures = supportedCulture,
-                SupportedUICultures = supportedCulture,
-                DefaultRequestCulture = new RequestCulture("en-US")
-            });
+            app.UseRequestLocalization(app.ApplicationServices
+                .GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
             app.UseRouting();
 

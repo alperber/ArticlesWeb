@@ -54,18 +54,31 @@
         }
         else
         {
+            <h2>Yorumlar</h2>
+            <hr />
             foreach (var comment in comments)
             {
-                <div>@comment.Text</div>
-                if (IsAdmin)
-                {
-                    <form asp-action="DeleteComment" asp-controller="Admin">
-                        <input name="postId" value="@Model.PostId" type="hidden"/>
-                        <input name="commentId" value="@comment.CommentId" type="hidden"/>
-                        <button asp-controller="Admin" asp-action="DeleteComment"></button>
-                    </form>
-                }
-                <hr/>
+                <div class="post-review">
+                    <div class="post-subtitle">
+                        @comment.User.Username
+                    </div>
+                    <div class="row">
+                    <div class="col-md-9" >@comment.Text</div>
+                        @if (IsAdmin)
+                        {
+                            <div class="cold-md-3">
+                                <form asp-action="DeleteComment" asp-controller="Admin">
+                                    <input name="postId" value="@Model.PostId" type="hidden"/>
+                                    <input name="commentId" value="@comment.CommentId" type="hidden"/>
+                                    <button asp-controller="Admin" asp-action="DeleteComment"></button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                    
+                </div>
+
+                <hr />
             }
         }
     }
@@ -78,4 +91,3 @@
         <button @buttonStatus type="submit" class="btn btn-primary"></button>
     }
 </form>
-

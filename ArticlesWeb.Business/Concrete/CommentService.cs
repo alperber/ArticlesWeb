@@ -23,7 +23,7 @@ namespace ArticlesWeb.Business.Concrete
 
         public IDataResult<List<Comment>> GetCommentsByPostId(int postId)
         {
-            return new SuccessDataResult<List<Comment>>(_repository.GetList(c => c.PostId == postId));
+            return new SuccessDataResult<List<Comment>>(_repository.GetCommentsWithUser(c => c.PostId == postId));
         }
 
         public IResult AddComment(CommentAddModel comment)
@@ -38,12 +38,33 @@ namespace ArticlesWeb.Business.Concrete
         public IResult DeleteComment(int commentId)
         {
             var comment = _repository.Get(c => c.CommentId == commentId);
-            if(comment == null) return new ErrorResult(Messages.CommentDoesntExists);
+            if (comment == null) return new ErrorResult(Messages.CommentDoesntExists);
 
             _postService.DecrementCommentCount(comment.PostId ?? 0);
             _repository.Delete(comment);
 
             return new SuccessResult();
+        }
+
+        public IResult DeleteCommentsOnPost(int postId)
+        {
+            var comments = _repository.GetList(c => c.PostId == postId);
+
+            if (comments.Count == 0)
+                return new SuccessResult();
+
+            try
+            {
+                foreach (var comment in comments)
+                {
+                    DeleteComment(comment.CommentId);
+                }
+                return new SuccessResult();
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(e.Message);
+            }
         }
     }
 }

@@ -21,9 +21,9 @@ namespace ArticlesWeb.MVC.Controllers
         {
             var response = _userService.GetUserDetailsById(userId);
 
-            if (!response.Success)
+            if (!response.Success || response.Data == null)
             {
-                // 404 Not Found
+                return NotFound();
             }
 
             return View(response.Data);

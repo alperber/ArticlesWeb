@@ -8,6 +8,7 @@ using ArticlesWeb.Business.Results;
 using ArticlesWeb.Entities.DbEntities;
 using ArticlesWeb.Entities.RequestModels;
 using ArticlesWeb.Repository.Abstract;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ArticlesWeb.Business.Concrete
 {
@@ -15,11 +16,13 @@ namespace ArticlesWeb.Business.Concrete
     {
         private readonly IPostRepository _repository;
         private readonly IUserService _userService;
+        private readonly IServiceProvider _serviceProvider;
 
-        public PostService(IPostRepository repository, IUserService userService)
+        public PostService(IPostRepository repository, IUserService userService, IServiceProvider serviceProvider)
         {
             _repository = repository;
             _userService = userService;
+            _serviceProvider = serviceProvider;
         }
 
         public IResult AddPost(PostAddModel post)
@@ -29,7 +32,7 @@ namespace ArticlesWeb.Business.Concrete
             try
             {
                 _repository.Add(newPost);
-                var response = _userService.IncrementPostCount(post.UserId ?? 1);
+                var response = _userService.IncrementPostCount(post.UserId ?? 0);
 
                 if(response.Success)
                     return new SuccessResult(Messages.PostCreated);
@@ -71,14 +74,25 @@ namespace ArticlesWeb.Business.Concrete
 
         public IResult DeletePostById(int postId)
         {
-            var post = _repository.Get(p => p.PostId == postId);
-
-            if (post == null)
+            try
             {
-                return new ErrorResult(Messages.PostDoesntExists);
+                var post = _repository.Get(p => p.PostId == postId);
+
+                if (post == null)
+                {
+                    return new ErrorResult(Messages.PostDoesntExists);
+                }
+
+                var commentService = _serviceProvider.GetRequiredService<ICommentService>();
+                commentService.DeleteCommentsOnPost(postId);
+                //_userService.DecrementPostCount(userId);
+                _repository.Delete(post);
+                return new SuccessResult(Messages.PostDeleted);
             }
-            _repository.Delete(post);
-            return new SuccessResult(Messages.PostDeleted);
+            catch (Exception e)
+            {
+                return new ErrorResult(e.Message);
+            }
         }
 
         public IDataResult<List<Post>> GetAllPostsWithUser()
@@ -92,25 +106,6 @@ namespace ArticlesWeb.Business.Concrete
             return new SuccessDataResult<Post>(data);
         }
 
-        public IResult DeletePost(int postId)
-        {
-            try
-            {
-                var post = _repository.Get(p => p.PostId == postId);
-
-                if (post == null)
-                {
-                    return new ErrorResult(Messages.PostDoesntExists);
-                }
-                _repository.Delete(post);
-                return new SuccessResult(Messages.PostDeleted);
-            }
-            catch (Exception e)
-            {
-                return new ErrorResult(e.Message);
-            }
-        }
-
         public IResult DeleteUserOwnedPosts(int userId)
         {
             var posts = _repository.GetList(p => p.UserId == userId);
@@ -118,7 +113,12 @@ namespace ArticlesWeb.Business.Concrete
             {
                 return new ErrorResult(Messages.UserDoesntHavePost);
             }
-            _repository.DeleteRange(posts);
+
+            foreach (var post in posts)
+            {
+                DeletePostById(post.PostId);
+            }
+
             return new SuccessResult();
         }
 

@@ -21,5 +21,6 @@ namespace ArticlesWeb.Business.Abstract
         IDataResult<Post> GetPostWithUser(int postId);
         IResult DeletePost(int postId);
         IResult DeleteUserOwnedPosts(int userId);
+        IResult DecrementCommentCount(int postId);
     }
 }

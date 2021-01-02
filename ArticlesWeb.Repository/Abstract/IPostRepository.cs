@@ -11,5 +11,6 @@ namespace ArticlesWeb.Repository.Abstract
         Post GetPostWithUser(int postId);
         List<Post> GetPostsWithUser(Expression<Func<Post, bool>> filterExpression = null);
         void IncrementCommentCount(int postId);
+        void DecrementCommentCount(int postId);
     }
 }

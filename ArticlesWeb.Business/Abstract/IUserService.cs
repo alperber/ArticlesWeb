@@ -21,6 +21,7 @@ namespace ArticlesWeb.Business.Abstract
         IResult UpdateUser(UserUpdateModel user);
         IResult CheckIfEmailExists(string email);
         IResult CheckIfUsernameExists(string username);
-
+        IResult MakeUserAdmin(int userId);
+        IDataResult<List<User>> GetAllUsers();
     }
 }

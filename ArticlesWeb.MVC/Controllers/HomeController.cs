@@ -12,6 +12,7 @@ using ArticlesWeb.Entities.RequestModels;
 using ArticlesWeb.Repository;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArticlesWeb.MVC.Controllers
@@ -67,6 +68,10 @@ namespace ArticlesWeb.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(UserLoginModel user)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(user);
+            }
             var response = await _userService.SignInAsync(user, HttpContext);
             if (response.Success)
             {

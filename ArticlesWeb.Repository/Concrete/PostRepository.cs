@@ -32,5 +32,11 @@ namespace ArticlesWeb.Repository.Concrete
             _context.Posts.FirstOrDefault(post => post.PostId == postId).CommentCount += 1;
             _context.SaveChanges();
         }
+
+        public void DecrementCommentCount(int postId)
+        {
+            _context.Posts.FirstOrDefault(post => post.PostId == postId).CommentCount -= 1;
+            _context.SaveChanges();
+        }
     }
 }

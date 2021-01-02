@@ -1,0 +1,41 @@
+﻿@model List<ArticlesWeb.Entities.DbEntities.User>
+@{
+    Layout = "_LayoutAdmin";
+
+    string message = TempData.ContainsKey("Message") ? TempData["Message"] as string : null;
+}
+
+@{
+    if (!String.IsNullOrEmpty(message))
+    {
+        <div class="alert alert-primary" role="alert">
+            @message
+        </div>
+    }
+}
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Fullname</th>
+            <th scope="col">Email</th>
+            <th scope="col">Is Admin</th>
+            <th scope="col">Delete</th>
+            <th scope="col">Give Admin Role</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Username</td>
+            <td>@user.Fullname</td>
+            <td>@user.Email</td>
+            <td>@user.isAdmin</td>
+            <td><a href="/Admin/DeleteUser/@user.UserId" class="btn btn-danger">Delete</a></td>
+            <td><a href="/Admin/MakeAdmin/@user.UserId" class="btn btn-success">Give Admin Role</a></td>
+        </tr>
+    }
+    </tbody>
+</table>

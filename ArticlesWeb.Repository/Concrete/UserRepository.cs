@@ -26,5 +26,15 @@ namespace ArticlesWeb.Repository.Concrete
             _context.SaveChanges();
             return true;
         }
+
+        public bool MakeAdmin(int userId)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+            if (user.isAdmin)
+                return false;
+
+            _context.SaveChanges();
+            return true;
+        }
     }
 }

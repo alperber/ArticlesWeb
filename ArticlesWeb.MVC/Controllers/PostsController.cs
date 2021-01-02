@@ -7,16 +7,19 @@ using System.Threading.Tasks;
 using ArticlesWeb.Business.Abstract;
 using ArticlesWeb.Entities.RequestModels;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace ArticlesWeb.MVC.Controllers
 {
     public class PostsController : Controller
     {
         private readonly IPostService _postService;
+        private readonly ICommentService _commentService;
 
-        public PostsController(IPostService postService)
+        public PostsController(IPostService postService, ICommentService commentService)
         {
             _postService = postService;
+            _commentService = commentService;
         }
 
         [Route("/Posts/Details/{postId}")]
@@ -45,10 +48,23 @@ namespace ArticlesWeb.MVC.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // yorum ekleme
-        public IActionResult AddComment()
+
+        // client-side'da ajax ile erişilecek
+        [Authorize]
+        [HttpPost]
+        public IActionResult AddComment(CommentAddModel comment)
         {
-            return View();
+            comment.UserId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value);
+
+            var response = _commentService.AddComment(comment);
+
+            if (response.Success)
+                return RedirectToAction("Details", "Posts", new
+                {
+                    postId = comment.PostId
+                });
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

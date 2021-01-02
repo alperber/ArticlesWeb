@@ -88,7 +88,8 @@ namespace ArticlesWeb.Business.Concrete
 
         public IDataResult<Post> GetPostWithUser(int postId)
         {
-            throw new NotImplementedException();
+            var data = _repository.GetPostWithUser(postId);
+            return new SuccessDataResult<Post>(data);
         }
 
         public IResult DeletePost(int postId)
@@ -118,6 +119,12 @@ namespace ArticlesWeb.Business.Concrete
                 return new ErrorResult(Messages.UserDoesntHavePost);
             }
             _repository.DeleteRange(posts);
+            return new SuccessResult();
+        }
+
+        public IResult DecrementCommentCount(int postId)
+        {
+            _repository.DecrementCommentCount(postId);
             return new SuccessResult();
         }
     }

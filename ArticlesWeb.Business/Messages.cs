@@ -16,5 +16,7 @@ namespace ArticlesWeb.Business
         public static string UserDoesntHavePost = "Kullanıcıya Ait Post Bulunamadı";
         public static string EmailAlreadyExists = "Bu Email Zaten Kullanılıyor";
         public static string UsernameAlreadyExists = "Bu Kullanıcı Adı Zaten Kullanılıyor";
+        public static string CommentDoesntExists = "Böyle bir yorum yok";
+        public static string UserAlreadyAdmin = "Kullanıcı Zaten Admin";
     }
 }

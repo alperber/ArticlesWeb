@@ -1,10 +1,81 @@
-﻿@model ArticlesWeb.Entities.DbEntities.Post
+﻿@using ArticlesWeb.Entities.DbEntities
+@using System.Security.Claims
+@model ArticlesWeb.Entities.DbEntities.Post
+@inject ArticlesWeb.Business.Abstract.ICommentService CommentService
 @{
     Layout = "_Layout2";
+
+    var response = CommentService.GetCommentsByPostId(Model.PostId);
+
+    List<Comment> comments = null;
+
+    bool IsAuthenticated = User.Identity.IsAuthenticated;
+
+    bool IsAdmin = false;
+
+    if (User.Identity.IsAuthenticated)
+    {
+        var claims = User.Claims.Where(c => c.Type == ClaimTypes.Role);
+        foreach (var claim in claims)
+        {
+            if (claim.Value == "Admin")
+            {
+                IsAdmin = true;
+                break;
+            }
+        }
+    }
+
+    string buttonStatus = IsAuthenticated ? String.Empty : "disabled";
+
+
+    if (response.Success)
+    {
+        comments = response.Data;
+    }
+
+
 }
 
 <div>
     <p>@Model.Title</p>
-    <br/>
+    <hr />
     <p>@Model.Text</p>
 </div>
+
+<div>
+    @{
+        if (comments.Count == 0)
+        {
+            <hr />
+            <div class="alert alert-danger" role="alert">
+                Burada yorum yok
+            </div>
+        }
+        else
+        {
+            foreach (var comment in comments)
+            {
+                <div>@comment.Text</div>
+                if (IsAdmin)
+                {
+                    <form asp-action="DeleteComment" asp-controller="Admin">
+                        <input name="postId" value="@Model.PostId" type="hidden"/>
+                        <input name="commentId" value="@comment.CommentId" type="hidden"/>
+                        <button asp-controller="Admin" asp-action="DeleteComment"></button>
+                    </form>
+                }
+                <hr/>
+            }
+        }
+    }
+</div>
+
+<form method="post" asp-controller="Posts" asp-action="AddComment">
+    <input type="hidden" name="PostId" value="@Model.PostId">
+    <textarea rows="5" name="Text"></textarea>
+    @{
+        <button @buttonStatus type="submit" class="btn btn-primary"></button>
+    }
+</form>
+

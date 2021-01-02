@@ -12,16 +12,21 @@ using ArticlesWeb.Entities.RequestModels;
 using ArticlesWeb.Repository.Abstract;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ArticlesWeb.Business.Concrete
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
+        //private readonly IPostService _postService;
+        private readonly IServiceProvider _serviceProvider;
 
-        public UserService(IUserRepository repository)
+        public UserService(IUserRepository repository, IServiceProvider serviceProvider)
         {
             _repository = repository;
+            _serviceProvider = serviceProvider;
+            //_postService = postService;
         }
 
         public IResult Register(UserRegisterModel user)
@@ -61,7 +66,6 @@ namespace ArticlesWeb.Business.Concrete
                 new Claim(ClaimTypes.Role, "User")
             };
 
-            // admin ise role admin de eklenir
             if(result.isAdmin)
             {
                 claims.Add(new Claim(ClaimTypes.Role, "Admin"));
@@ -75,8 +79,15 @@ namespace ArticlesWeb.Business.Concrete
 
         public async Task<IResult> SignOutAsync(HttpContext httpContext)
         {
-            await httpContext.SignOutAsync();
-            return new SuccessResult();
+            try
+            {
+                await httpContext.SignOutAsync();
+                return new SuccessResult();
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(e.Message);
+            }
         }
 
         public IDataResult<User> GetUserDetailsById(int userId)
@@ -97,8 +108,22 @@ namespace ArticlesWeb.Business.Concrete
             {
                 return new ErrorResult(Messages.UserDoesntExists);
             }
-            _repository.Delete(user);
-            return new SuccessResult(Messages.UserDeleted);
+
+            IPostService postService = _serviceProvider.GetRequiredService<IPostService>();
+            var response = postService.DeleteUserOwnedPosts(userId);
+
+            if (!response.Success)
+                return new ErrorResult(response.Message);
+
+            try
+            {
+                _repository.Delete(user);
+                return new SuccessResult(Messages.UserDeleted);
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(e.Message);
+            }
         }
 
         public IResult IncrementPostCount(int userId)
@@ -128,8 +153,16 @@ namespace ArticlesWeb.Business.Concrete
             }
 
             User newUser = UserHelper.UpdatedUser(user, oldUser);
-            _repository.Update(newUser);
-            return new SuccessResult();
+
+            try
+            {
+                _repository.Update(newUser);
+                return new SuccessResult();
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(e.Message);
+            }
         }
 
         public IResult CheckIfEmailExists(string email)
@@ -150,6 +183,21 @@ namespace ArticlesWeb.Business.Concrete
                 return new ErrorResult();
             }
             return new SuccessResult(Messages.UsernameAlreadyExists);
+        }
+
+        public IResult MakeUserAdmin(int userId)
+        {
+            var result = _repository.MakeAdmin(userId);
+
+            if(result)
+                return  new SuccessResult();
+
+            return new ErrorResult(Messages.UserAlreadyAdmin);
+        }
+
+        public IDataResult<List<User>> GetAllUsers()
+        {
+            return new SuccessDataResult<List<User>>(_repository.GetList());
         }
     }
 }

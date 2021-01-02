@@ -10,5 +10,6 @@ namespace ArticlesWeb.Repository.Abstract
     public interface IUserRepository : IRepository<User>
     {
         bool IncrementPostCount(int userId);
+        bool MakeAdmin(int userId);
     }
 }

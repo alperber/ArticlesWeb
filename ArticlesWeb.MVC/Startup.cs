@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using ArticlesWeb.Business.Abstract;
@@ -13,6 +14,8 @@ using ArticlesWeb.Repository;
 using ArticlesWeb.Repository.Abstract;
 using ArticlesWeb.Repository.Concrete;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 
 namespace ArticlesWeb.MVC
@@ -42,7 +45,6 @@ namespace ArticlesWeb.MVC
                     options.LoginPath = "/Home/Login";
                 });
 
-            // View'da httpcontext'e eriþebilmek için
             services.AddHttpContextAccessor();
 
             services.AddTransient<IUserRepository, UserRepository>();
@@ -50,6 +52,19 @@ namespace ArticlesWeb.MVC
 
             services.AddTransient<IPostRepository, PostRepository>();
             services.AddTransient<IPostService, PostService>();
+
+            services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddTransient<ICommentService, CommentService>();
+
+            services.AddLocalization(options =>
+            {
+                options.ResourcesPath = "Resources";
+            });
+
+            services
+                .AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +79,19 @@ namespace ArticlesWeb.MVC
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
+
+            var supportedCulture = new List<CultureInfo>
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("tr-TR")
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                SupportedCultures = supportedCulture,
+                SupportedUICultures = supportedCulture,
+                DefaultRequestCulture = new RequestCulture("en-US")
+            });
 
             app.UseRouting();
 

@@ -8,10 +8,10 @@ namespace ArticlesWeb.Entities.RequestModels
     public class UserLoginModel
     {
         [Required]
-        [StringLength(20)]
+        [StringLength(50)]
         public string Username { get; set; }
         [Required]
-        [StringLength(20)]
+        [StringLength(50)]
         public string Password { get; set; }
     }
 }

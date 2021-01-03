@@ -66,5 +66,23 @@ namespace ArticlesWeb.Business.Concrete
                 return new ErrorResult(e.Message);
             }
         }
+
+        public IResult DeleteUserComments(int userId)
+        {
+            var comments = _repository.GetCommentsWithUser(c => c.UserId == userId);
+            try
+            {
+                foreach (var comment in comments)
+                {
+                    _postService.DecrementCommentCount(comment.PostId ?? 0);
+                }
+                _repository.DeleteRange(comments);
+                return new SuccessResult();
+            }
+            catch (Exception e)
+            {
+                return new ErrorResult(e.Message);
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿@model ArticlesWeb.Entities.DbEntities.User
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @{
     Layout = "_Layout2";
     DateTime bd = Model.Birthday ?? DateTime.Now;
@@ -38,18 +39,18 @@
     <div class="wrapper wrapper--w680">
         <div class="card card-4">
             <div class="card-body">
-                <h2 class="title">Update Profile</h2>
+                <h2 class="title">@localizer["UpdateProfile"]</h2>
                 <form asp-controller="Home" asp-action="EditProfile" method="POST">
                     <div class="row row-space">
                         <div class="col-6">
                             <div class="input-group">
-                                <label class="label">Username</label>
+                                <label class="label">@localizer["Username"]</label>
                                 <input class="input--style-4" type="text" value="@Model.Username" name="Username">
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="input-group">
-                                <label class="label">Password</label>
+                                <label class="label">@localizer["Password"]</label>
                                 <input class="input--style-4" type="password" value="@Model.Password" name="Password">
                             </div>
                         </div>
@@ -57,7 +58,7 @@
                     <div class="row row-space">
                         <div class="col-6">
                             <div class="input-group">
-                                <label class="label">Birthday</label>
+                                <label class="label">@localizer["Birthday"]</label>
                                 <div class="input-group-icon">
                                     <input class="input--style-4 js-datepicker" value="@bd.ToShortDateString()" type="text" name="Birthday">
                                     @*<i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>*@
@@ -66,7 +67,7 @@
                         </div>
                         <div class="col-6">
                             <div class="input-group">
-                                <label class="label">Fullname</label>
+                                <label class="label">@localizer["Fullname"]</label>
                                 <input class="input--style-4" value="@Model.Fullname" type="text" name="Fullname">
                             </div>
                         </div>
@@ -74,7 +75,7 @@
                     <div class="row row-space">
                         <div class="col-12">
                             <div class="input-group">
-                                <label class="label">Email</label>
+                                <label class="label">@localizer["Email"]</label>
                                 <input class="input--style-4" value="@Model.Email" type="email" name="Email">
                             </div>
                         </div>
@@ -82,14 +83,14 @@
                     <div class="row row-space">
                         <div class="col-12">
                             <div class="input-group">
-                                <label class="label">Biography</label>
+                                <label class="label">@localizer["Biography"]</label>
                                 <input class="input--style-4" value="@Model.About" type="text" name="About">
                             </div>
                         </div>
                     </div>
 
                     <div class="p-t-15">
-                        <button class="btn btn--radius-2 btn--blue" type="submit">Save Changes</button>
+                        <button class="btn btn--radius-2 btn--blue" type="submit">@localizer["SaveChanges"]</button>
                     </div>
                 </form>
             </div>

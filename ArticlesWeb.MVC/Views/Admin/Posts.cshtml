@@ -23,7 +23,6 @@
             <th scope="col">Owner Email</th>
             <th scope="col">Comment Count</th>
             <th scope="col">Created At</th>
-            <th scope="col">Delete</th>
         </tr>
     </thead>
     <tbody>
@@ -35,7 +34,6 @@
             <td>@post.User.Email</td>
             <td>@post.CommentCount</td>
             <td>@post.CreatedAt.ToString(CultureInfo.InvariantCulture)</td>
-            <td><a href="/Admin/DeletePost/@post.PostId" class="btn btn-danger">Delete</a></td>
         </tr>
     }
     </tbody>

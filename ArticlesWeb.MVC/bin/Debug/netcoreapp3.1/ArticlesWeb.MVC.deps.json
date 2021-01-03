@@ -307,6 +307,9 @@
         "resources": {
           "en/ArticlesWeb.MVC.resources.dll": {
             "locale": "en"
+          },
+          "tr/ArticlesWeb.MVC.resources.dll": {
+            "locale": "tr"
           }
         },
         "compile": {

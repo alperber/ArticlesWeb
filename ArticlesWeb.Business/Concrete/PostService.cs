@@ -85,7 +85,7 @@ namespace ArticlesWeb.Business.Concrete
 
                 var commentService = _serviceProvider.GetRequiredService<ICommentService>();
                 commentService.DeleteCommentsOnPost(postId);
-                //_userService.DecrementPostCount(userId);
+                _userService.DecrementPostCount(post.UserId ?? 0);
                 _repository.Delete(post);
                 return new SuccessResult(Messages.PostDeleted);
             }

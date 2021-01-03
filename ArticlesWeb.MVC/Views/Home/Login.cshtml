@@ -1,5 +1,6 @@
 ﻿@model ArticlesWeb.Entities.RequestModels.UserLoginModel
 @using ArticlesWeb.Entities.RequestModels
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @{
     Layout = "_Layout2";
 
@@ -32,15 +33,15 @@
 <form method="post" asp-controller="Home" asp-action="Login">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
-        <label>Username</label>
-        <input asp-for="Username" type="text" class="form-control" name="Username" aria-describedby="emailHelp" placeholder="Enter email">
+        <label>@localizer["Username"]</label>
+        <input asp-for="Username" type="text" class="form-control" name="Username" aria-describedby="emailHelp">
     </div>
     <div class="form-group">
-        <label>Password</label>
-        <input asp-for="Password" type="password" class="form-control" name="Password" placeholder="Password">
+        <label>@localizer["Password"]</label>
+        <input asp-for="Password" type="password" class="form-control" name="Password">
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">@localizer["Submit"]</button>
     </div>
 
 </form>

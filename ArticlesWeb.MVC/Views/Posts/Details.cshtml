@@ -1,6 +1,7 @@
 ﻿@using ArticlesWeb.Entities.DbEntities
 @using System.Security.Claims
 @model ArticlesWeb.Entities.DbEntities.Post
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @inject ArticlesWeb.Business.Abstract.ICommentService CommentService
 @{
     Layout = "_Layout2";
@@ -38,7 +39,7 @@
 }
 
 <div>
-    <p>@Model.Title</p>
+    <h3>@Model.Title</h3>
     <hr />
     <p>@Model.Text</p>
 </div>
@@ -49,33 +50,34 @@
         {
             <hr />
             <div class="alert alert-danger" role="alert">
-                Burada yorum yok
+                @localizer["NoComment"]
             </div>
         }
         else
         {
-            <h2>Yorumlar</h2>
+            <h2>@localizer["Comments"]</h2>
             <hr />
             foreach (var comment in comments)
             {
                 <div class="post-review">
                     <div class="post-subtitle">
-                        @comment.User.Username
+                        <a style="color: red !important; font-weight: bold; font-size: 20px"
+                           asp-controller="Users" asp-action="Details" asp-route-userId="@comment.UserId">@comment.User.Username</a>
                     </div>
                     <div class="row">
-                    <div class="col-md-9" >@comment.Text</div>
+                        <div style="font-size: 30px" class="col-md-9">@comment.Text</div>
                         @if (IsAdmin)
                         {
                             <div class="cold-md-3">
                                 <form asp-action="DeleteComment" asp-controller="Admin">
-                                    <input name="postId" value="@Model.PostId" type="hidden"/>
-                                    <input name="commentId" value="@comment.CommentId" type="hidden"/>
-                                    <button asp-controller="Admin" asp-action="DeleteComment"></button>
+                                    <input name="postId" value="@Model.PostId" type="hidden" />
+                                    <input name="commentId" value="@comment.CommentId" type="hidden" />
+                                    <button class="btn btn-danger" asp-controller="Admin" asp-action="DeleteComment">@localizer["DeleteComment"]</button>
                                 </form>
                             </div>
                         }
                     </div>
-                    
+
                 </div>
 
                 <hr />
@@ -86,8 +88,9 @@
 
 <form method="post" asp-controller="Posts" asp-action="AddComment">
     <input type="hidden" name="PostId" value="@Model.PostId">
-    <textarea rows="5" name="Text"></textarea>
+    <textarea rows="5" style="width: 1110px" name="Text"></textarea>
+    <br />
     @{
-        <button @buttonStatus type="submit" class="btn btn-primary"></button>
+        <button @buttonStatus type="submit" class="btn btn-primary">@localizer["AddComment"]</button>
     }
 </form>

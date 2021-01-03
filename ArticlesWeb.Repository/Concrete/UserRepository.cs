@@ -27,6 +27,18 @@ namespace ArticlesWeb.Repository.Concrete
             return true;
         }
 
+        public bool DecrementPostCount(int userId)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+
+            if (user == null)
+                return false;
+
+            user.PostCount -= 1;
+            _context.SaveChanges();
+            return true;
+        }
+
         public bool MakeAdmin(int userId)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserId == userId);

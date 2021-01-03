@@ -18,8 +18,15 @@ namespace ArticlesWeb.Repository.Concrete
         public List<Comment> GetCommentsWithUser(Expression<Func<Comment, bool>> filterExpression = null)
         {
             return filterExpression == null
-                ? _context.Comments.Include(c => c.User).ToList()
-                : _context.Comments.Where(filterExpression).Include(c => c.User).ToList();
+                ? _context.Comments.Include(c => c.User).AsNoTracking().ToList()
+                : _context.Comments.Where(filterExpression).Include(c => c.User).AsNoTracking().ToList();
+        }
+
+        public void DeleteUserComments(int userId)
+        {
+            var comments = _context.Comments.Where(c => c.UserId == userId).AsNoTracking().ToList();
+            _context.Comments.RemoveRange(comments);
+            _context.SaveChanges();
         }
     }
 }

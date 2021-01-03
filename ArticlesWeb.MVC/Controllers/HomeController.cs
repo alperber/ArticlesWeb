@@ -52,6 +52,9 @@ namespace ArticlesWeb.MVC.Controllers
         [HttpPost]
         public IActionResult Register(UserRegisterModel user)
         {
+            if (!ModelState.IsValid)
+                return View(user);
+
             var response = _userService.Register(user);
 
             if (response.Success)

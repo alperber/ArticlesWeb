@@ -1,4 +1,6 @@
 ﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @{
     bool isAdmin = false;
     string username = null;
@@ -56,16 +58,16 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">@localizer["Home"]</a>
                     </li>
                     @{
                         if (!User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Home" asp-action="Login">Login</a>
+                                <a class="nav-link" asp-controller="Home" asp-action="Login">@localizer["Login"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Home" asp-action="Register">Register</a>
+                                <a class="nav-link" asp-controller="Home" asp-action="Register">@localizer["Register"]</a>
                             </li>
                         }
                         else
@@ -77,13 +79,13 @@
                                 </li>
                             }
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Posts" asp-action="AddPost">Share Article</a>
+                                <a class="nav-link" asp-controller="Posts" asp-action="AddPost">@localizer["ShareArticle"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="Users/Details/@userId">Merhaba @username</a>
+                                <a class="nav-link" href="Users/Details/@userId">@localizer["Hello"] @username</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Home" asp-action="SignOut">Logout</a>
+                                <a class="nav-link" asp-controller="Home" asp-action="SignOut">@localizer["Logout"]</a>
                             </li>
                         }
                     }
@@ -100,8 +102,7 @@
             <div class="row">
                 <div class="col-lg-8 col-md-10 mx-auto">
                     <div class="site-heading">
-                        <h1>Where good ideas find you</h1>
-                        <span class="subheading">A Blog Theme by Start Bootstrap</span>
+                        <h1>@localizer["Title"]</h1>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,5 @@
 ﻿@using System.Security.Claims
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @{
     bool isAdmin = false;
     if (User.Identity.IsAuthenticated)
@@ -52,16 +53,16 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">@localizer["Home"]</a>
                         </li>
                         @{
                             if (!User.Identity.IsAuthenticated)
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Home" asp-action="Login">Login</a>
+                                    <a class="nav-link" asp-controller="Home" asp-action="Login">@localizer["Login"]</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Home" asp-action="Register">Register</a>
+                                    <a class="nav-link" asp-controller="Home" asp-action="Register">@localizer["Register"]</a>
                                 </li>
                             }
                             else
@@ -69,20 +70,21 @@
                                 if (isAdmin)
                                 {
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Paneli</a>
+                                        <a class="nav-link" asp-controller="Admin" asp-action="Index">Admin Panel</a>
                                     </li>
                                 }
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Posts" asp-action="AddPost">Share Article</a>
+                                    <a class="nav-link" asp-controller="Posts" asp-action="AddPost">@localizer["ShareArticle"]</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Home" asp-action="Index">Merhaba @User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value</a>
+                                    <a class="nav-link" asp-controller="Users" asp-action="Details" asp-route-userId="@User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid)?.Value">@localizer["Hello"] @User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Home" asp-action="SignOut">Logout</a>
+                                    <a class="nav-link" asp-controller="Home" asp-action="SignOut">@localizer["Logout"]</a>
                                 </li>
                             }
                         }
+                        <partial name="_Culture" />
                     </ul>
                 </div>
             </div>

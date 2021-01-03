@@ -19,14 +19,12 @@ namespace ArticlesWeb.Business.Concrete
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
-        //private readonly IPostService _postService;
         private readonly IServiceProvider _serviceProvider;
 
         public UserService(IUserRepository repository, IServiceProvider serviceProvider)
         {
             _repository = repository;
             _serviceProvider = serviceProvider;
-            //_postService = postService;
         }
 
         public IResult Register(UserRegisterModel user)
@@ -109,14 +107,16 @@ namespace ArticlesWeb.Business.Concrete
                 return new ErrorResult(Messages.UserDoesntExists);
             }
 
-            IPostService postService = _serviceProvider.GetRequiredService<IPostService>();
-            var response = postService.DeleteUserOwnedPosts(userId);
+            //IPostService postService = _serviceProvider.GetRequiredService<IPostService>();
+            //var response = postService.DeleteUserOwnedPosts(userId);
 
-            if (!response.Success)
-                return new ErrorResult(response.Message);
+            //if (!response.Success)
+            //    return new ErrorResult(response.Message);
 
             try
             {
+                //var commentService = _serviceProvider.GetRequiredService<ICommentService>();
+                //commentService.DeleteUserComments(user.UserId);
                 _repository.Delete(user);
                 return new SuccessResult(Messages.UserDeleted);
             }
@@ -132,6 +132,16 @@ namespace ArticlesWeb.Business.Concrete
 
             if(result) 
                 return  new SuccessResult();
+
+            return new ErrorResult(Messages.UserDoesntExists);
+        }
+
+        public IResult DecrementPostCount(int userId)
+        {
+            bool result = _repository.DecrementPostCount(userId);
+
+            if (result)
+                return new SuccessResult();
 
             return new ErrorResult(Messages.UserDoesntExists);
         }
@@ -183,16 +193,6 @@ namespace ArticlesWeb.Business.Concrete
                 return new ErrorResult();
             }
             return new SuccessResult(Messages.UsernameAlreadyExists);
-        }
-
-        public IResult MakeUserAdmin(int userId)
-        {
-            var result = _repository.MakeAdmin(userId);
-
-            if(result)
-                return  new SuccessResult();
-
-            return new ErrorResult(Messages.UserAlreadyAdmin);
         }
 
         public IDataResult<List<User>> GetAllUsers()

@@ -13,5 +13,6 @@ namespace ArticlesWeb.Business.Abstract
         public IResult AddComment(CommentAddModel comment);
         IResult DeleteComment(int commentId);
         IResult DeleteCommentsOnPost(int postId);
+        IResult DeleteUserComments(int userId);
     }
 }

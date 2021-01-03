@@ -14,7 +14,7 @@ namespace ArticlesWeb.Repository
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
         //    optionsBuilder
-        //        .UseSqlServer("Server=WESTWORLD\\SQLEXPRESS;Database=WebProje1;Trusted_Connection=true");
+        //        .UseSqlServer("Server=WESTWORLD\\SQLEXPRESS;Database=WebProje5;Trusted_Connection=true");
         //}
 
         public DbSet<User> Users { get; set; }

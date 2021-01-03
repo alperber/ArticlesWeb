@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArticlesWeb.Repository.Migrations
 {
     [DbContext(typeof(ArticlesContext))]
-    [Migration("20201228185551_postLikeDeleted")]
-    partial class postLikeDeleted
+    [Migration("20210103090309_initialMigration")]
+    partial class initialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,6 +41,8 @@ namespace ArticlesWeb.Repository.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("CommentId");
+
+                    b.HasIndex("PostId");
 
                     b.HasIndex("UserId");
 
@@ -117,9 +119,15 @@ namespace ArticlesWeb.Repository.Migrations
 
             modelBuilder.Entity("ArticlesWeb.Entities.DbEntities.Comment", b =>
                 {
+                    b.HasOne("ArticlesWeb.Entities.DbEntities.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId");
+
                     b.HasOne("ArticlesWeb.Entities.DbEntities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Post");
 
                     b.Navigation("User");
                 });

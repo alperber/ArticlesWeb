@@ -22,6 +22,11 @@ namespace ArticlesWeb.MVC.Controllers
             _commentService = commentService;
         }
 
+        public IActionResult Index()
+        {
+            return RedirectToAction(nameof(Users));
+        }
+
         public IActionResult Users()
         {
             var response = _userService.GetAllUsers();
@@ -32,16 +37,6 @@ namespace ArticlesWeb.MVC.Controllers
             var response = _postService.GetAllPostsWithUser();
 
             return View(response.Data);
-        }
-
-        [Route("/Admin/MakeAdmin/{userId}")]
-        public IActionResult MakeAdmin(int userId)
-        {
-            var response = _userService.MakeUserAdmin(userId);
-
-            TempData["Message"] = response.Message;
-            
-            return RedirectToAction(nameof(Users));
         }
 
         [HttpPost]

@@ -34,7 +34,7 @@ namespace ArticlesWeb.Repository.Concrete
         {
             return filterExpression == null
                 ? _context.Set<TEntity>().ToList()
-                : _context.Set<TEntity>().Where(filterExpression).ToList();
+                : _context.Set<TEntity>().Where(filterExpression).AsNoTracking().ToList();
         }
 
         public void Delete(TEntity entity)

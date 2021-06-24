@@ -1,9 +1,0 @@
-C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.DB\bin\Debug\netcoreapp3.1\ArticlesWeb.Entities.deps.json
-C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.DB\bin\Debug\netcoreapp3.1\ArticlesWeb.Entities.dll
-C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.DB\bin\Debug\netcoreapp3.1\ArticlesWeb.Entities.pdb
-C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.DB\obj\Debug\netcoreapp3.1\ArticlesWeb.Entities.csprojAssemblyReference.cache
-C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.DB\obj\Debug\netcoreapp3.1\ArticlesWeb.Entities.AssemblyInfoInputs.cache
-C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.DB\obj\Debug\netcoreapp3.1\ArticlesWeb.Entities.AssemblyInfo.cs
-C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.DB\obj\Debug\netcoreapp3.1\ArticlesWeb.Entities.csproj.CoreCompileInputs.cache
-C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.DB\obj\Debug\netcoreapp3.1\ArticlesWeb.Entities.dll
-C:\Users\Alper\Desktop\Github\ArticlesWeb\ArticlesWeb.DB\obj\Debug\netcoreapp3.1\ArticlesWeb.Entities.pdb

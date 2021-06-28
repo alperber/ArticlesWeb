@@ -8,9 +8,9 @@ namespace ArticlesWeb.Repository.Abstract
 {
     public interface IPostRepository : IRepository<Post>
     {
-        Post GetPostWithUser(int postId);
+        Post GetPostWithUser(string postId);
         List<Post> GetPostsWithUser(Expression<Func<Post, bool>> filterExpression = null);
-        void IncrementCommentCount(int postId);
-        void DecrementCommentCount(int postId);
+        void IncrementCommentCount(string postId);
+        void DecrementCommentCount(string postId);
     }
 }

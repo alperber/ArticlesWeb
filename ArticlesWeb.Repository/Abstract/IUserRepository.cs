@@ -9,8 +9,8 @@ namespace ArticlesWeb.Repository.Abstract
 {
     public interface IUserRepository : IRepository<User>
     {
-        bool IncrementPostCount(int userId);
-        bool DecrementPostCount(int userId);
-        bool MakeAdmin(int userId);
+        void IncrementPostCount(string userId);
+        void DecrementPostCount(string userId);
+        void UpdateRoleAsAdmin(string userId);
     }
 }

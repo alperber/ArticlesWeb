@@ -10,6 +10,8 @@ namespace ArticlesWeb.Repository
     {
         public ArticlesContext(DbContextOptions options) : base(options)
         {
+            this.ChangeTracker.AutoDetectChangesEnabled = false;
+            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{

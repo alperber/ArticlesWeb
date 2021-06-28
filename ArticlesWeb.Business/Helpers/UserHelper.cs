@@ -20,7 +20,7 @@ namespace ArticlesWeb.Business.Helpers
                 PostCount = 0,
                 About = user.About,
                 RegistrationDate = DateTime.Now,
-                isAdmin = false
+                IsAdmin = false
             };
         }
         public static User UpdatedUser(UserUpdateModel user, User oldUser)
@@ -36,7 +36,7 @@ namespace ArticlesWeb.Business.Helpers
                 PostCount = oldUser.PostCount,
                 RegistrationDate = oldUser.RegistrationDate,
                 UserId = oldUser.UserId,
-                isAdmin = oldUser.isAdmin
+                IsAdmin = oldUser.IsAdmin
             };
         }
     }

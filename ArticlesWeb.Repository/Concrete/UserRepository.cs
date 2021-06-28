@@ -18,9 +18,9 @@ namespace ArticlesWeb.Repository.Concrete
         public void IncrementPostCount(string userId)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
-
+            
             if (user == null) return;
-
+            
             user.PostCount += 1;
             _context.SaveChanges();
         }
@@ -28,9 +28,9 @@ namespace ArticlesWeb.Repository.Concrete
         public void DecrementPostCount(string userId)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
-
+            
             if (user == null) return;
-
+            
             user.PostCount -= 1;
             _context.SaveChanges();
         }
@@ -40,7 +40,7 @@ namespace ArticlesWeb.Repository.Concrete
             var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
             
             if (user is null || user.IsAdmin) return;
-
+           
             user.IsAdmin = true;
            _context.SaveChanges();
         }

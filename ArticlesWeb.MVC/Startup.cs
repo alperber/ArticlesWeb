@@ -3,11 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using ArticlesWeb.Business.Abstract;
 using ArticlesWeb.Business.Concrete;
 using ArticlesWeb.Repository;
@@ -37,7 +34,7 @@ namespace ArticlesWeb.MVC
 
             services.AddDbContext<ArticlesContext>(options =>
             {
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseNpgsql(Configuration.GetConnectionString("DevConnection"));
             });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -48,14 +45,14 @@ namespace ArticlesWeb.MVC
 
             services.AddHttpContextAccessor();
 
-            services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IUserService, UserService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
 
-            services.AddTransient<IPostRepository, PostRepository>();
-            services.AddTransient<IPostService, PostService>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IPostService, PostService>();
 
-            services.AddTransient<ICommentRepository, CommentRepository>();
-            services.AddTransient<ICommentService, CommentService>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<ICommentService, CommentService>();
 
             services.AddLocalization(options =>
             {

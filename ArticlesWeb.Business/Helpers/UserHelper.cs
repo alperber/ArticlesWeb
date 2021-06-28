@@ -10,10 +10,13 @@ namespace ArticlesWeb.Business.Helpers
     {
         public static User CreateUser(UserRegisterModel user)
         {
+            var (hashedP, salt) = PasswordHasher.CreatePasswordHash(user.Password);
+            
             return new User()
             {
                 Username = user.Username,
-                Password = user.Password,
+                Password = hashedP,
+                PasswordSalt = salt,
                 Email = user.Email,
                 Fullname = user.Fullname,
                 Birthday = user.BirthDate,

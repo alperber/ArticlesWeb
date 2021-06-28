@@ -49,17 +49,16 @@ namespace ArticlesWeb.Business.Concrete
 
         public async Task<IResult> SignInAsync(UserLoginModel user, HttpContext httpContext)
         {
-            var result = _repository.Get(u => u.Username == user.Username
-                                 && u.Password == user.Password);
+            var result = _repository.Get(u => u.Username == user.Username);
 
-            if (result == null)
+            if (result == null || !PasswordHasher.VerifyPasswordHash(user.Password, result.Password, result.PasswordSalt))
             {
                 return new ErrorResult(Messages.WrongInput);
             }
-
+            
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Sid, result.UserId.ToString()),
+                new Claim(ClaimTypes.Sid, result.UserId),
                 new Claim(ClaimTypes.Name, result.Username),
                 new Claim(ClaimTypes.Role, "User")
             };

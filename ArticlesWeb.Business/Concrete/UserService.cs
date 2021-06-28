@@ -49,22 +49,21 @@ namespace ArticlesWeb.Business.Concrete
 
         public async Task<IResult> SignInAsync(UserLoginModel user, HttpContext httpContext)
         {
-            var result = _repository.Get(u => u.Username == user.Username
-                                 && u.Password == user.Password);
+            var result = _repository.Get(u => u.Username == user.Username);
 
-            if (result == null)
+            if (result == null || !PasswordHasher.VerifyPasswordHash(user.Password, result.Password, result.PasswordSalt))
             {
                 return new ErrorResult(Messages.WrongInput);
             }
-
+            
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Sid, result.UserId.ToString()),
+                new Claim(ClaimTypes.Sid, result.UserId),
                 new Claim(ClaimTypes.Name, result.Username),
                 new Claim(ClaimTypes.Role, "User")
             };
 
-            if(result.isAdmin)
+            if(result.IsAdmin)
             {
                 claims.Add(new Claim(ClaimTypes.Role, "Admin"));
             }
@@ -88,7 +87,7 @@ namespace ArticlesWeb.Business.Concrete
             }
         }
 
-        public IDataResult<User> GetUserDetailsById(int userId)
+        public IDataResult<User> GetUserDetailsById(string userId)
         {
             return new SuccessDataResult<User>(_repository.Get(u => u.UserId == userId));
         }
@@ -98,7 +97,7 @@ namespace ArticlesWeb.Business.Concrete
             return new SuccessDataResult<User>(_repository.Get(u => u.Username == username));
         }
 
-        public IResult DeleteUserById(int userId)
+        public IResult DeleteUserById(string userId)
         {
             var user = _repository.Get(u => u.UserId == userId);
 
@@ -126,24 +125,18 @@ namespace ArticlesWeb.Business.Concrete
             }
         }
 
-        public IResult IncrementPostCount(int userId)
+        public IResult IncrementPostCount(string userId)
         {
-            bool result = _repository.IncrementPostCount(userId);
+            _repository.IncrementPostCount(userId);
 
-            if(result) 
-                return  new SuccessResult();
-
-            return new ErrorResult(Messages.UserDoesntExists);
+            return new SuccessResult();
         }
 
-        public IResult DecrementPostCount(int userId)
+        public IResult DecrementPostCount(string userId)
         {
-            bool result = _repository.DecrementPostCount(userId);
-
-            if (result)
-                return new SuccessResult();
-
-            return new ErrorResult(Messages.UserDoesntExists);
+            _repository.DecrementPostCount(userId);
+            
+            return new SuccessResult();
         }
 
         public IResult UpdateUser(UserUpdateModel user)

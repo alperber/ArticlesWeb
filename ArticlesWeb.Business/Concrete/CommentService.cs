@@ -21,7 +21,7 @@ namespace ArticlesWeb.Business.Concrete
             _postService = postService;
         }
 
-        public IDataResult<List<Comment>> GetCommentsByPostId(int postId)
+        public IDataResult<List<Comment>> GetCommentsByPostId(string postId)
         {
             return new SuccessDataResult<List<Comment>>(_repository.GetCommentsWithUser(c => c.PostId == postId));
         }
@@ -30,23 +30,23 @@ namespace ArticlesWeb.Business.Concrete
         {
             Comment newComment = CommentHelper.CreateComment(comment);
 
-            _postService.IncrementCommentCount(newComment.PostId ?? 0);
+            _postService.IncrementCommentCount(newComment.PostId);
             _repository.Add(newComment);
             return new SuccessResult();
         }
 
-        public IResult DeleteComment(int commentId)
+        public IResult DeleteComment(string commentId)
         {
             var comment = _repository.Get(c => c.CommentId == commentId);
             if (comment == null) return new ErrorResult(Messages.CommentDoesntExists);
 
-            _postService.DecrementCommentCount(comment.PostId ?? 0);
+            _postService.DecrementCommentCount(comment.PostId);
             _repository.Delete(comment);
 
             return new SuccessResult();
         }
 
-        public IResult DeleteCommentsOnPost(int postId)
+        public IResult DeleteCommentsOnPost(string postId)
         {
             var comments = _repository.GetList(c => c.PostId == postId);
 
@@ -67,14 +67,14 @@ namespace ArticlesWeb.Business.Concrete
             }
         }
 
-        public IResult DeleteUserComments(int userId)
+        public IResult DeleteUserComments(string userId)
         {
             var comments = _repository.GetCommentsWithUser(c => c.UserId == userId);
             try
             {
                 foreach (var comment in comments)
                 {
-                    _postService.DecrementCommentCount(comment.PostId ?? 0);
+                    _postService.DecrementCommentCount(comment.PostId);
                 }
                 _repository.DeleteRange(comments);
                 return new SuccessResult();

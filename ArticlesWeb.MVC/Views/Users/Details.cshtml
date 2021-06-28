@@ -5,7 +5,7 @@
 @{
     Layout = "_Layout2";
 
-    int userId = Model.UserId;
+    var userId = Model.UserId;
 
     var posts = PostService.GetPostsByUserId(userId);
 
@@ -14,7 +14,7 @@
 
     if (User.Identity.IsAuthenticated)
     {
-        int currentUserId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value);
+        var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value;
         isSelfPage = currentUserId == userId;
     }
 

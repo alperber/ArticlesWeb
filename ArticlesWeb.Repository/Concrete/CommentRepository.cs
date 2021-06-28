@@ -22,9 +22,9 @@ namespace ArticlesWeb.Repository.Concrete
                 : _context.Comments.Where(filterExpression).Include(c => c.User).AsNoTracking().ToList();
         }
 
-        public void DeleteUserComments(int userId)
+        public void DeleteUserComments(string userId)
         {
-            var comments = _context.Comments.Where(c => c.UserId == userId).AsNoTracking().ToList();
+            var comments = _context.Comments.Where(c => c.CommentId == userId).ToList();
             _context.Comments.RemoveRange(comments);
             _context.SaveChanges();
         }

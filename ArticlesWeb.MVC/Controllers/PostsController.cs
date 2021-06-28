@@ -23,7 +23,7 @@ namespace ArticlesWeb.MVC.Controllers
         }
 
         [Route("/Posts/Details/{postId}")]
-        public IActionResult Details(int postId)
+        public IActionResult Details(string postId)
         {
             var response = _postService.GetPostById(postId);
             if (response.Data == null || !response.Success)
@@ -43,7 +43,7 @@ namespace ArticlesWeb.MVC.Controllers
         [HttpPost]
         public IActionResult AddPost(PostAddModel post)
         {
-            post.UserId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value);
+            post.UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value;
             _postService.AddPost(post);
             return RedirectToAction("Index", "Home");
         }
@@ -54,7 +54,7 @@ namespace ArticlesWeb.MVC.Controllers
         [HttpPost]
         public IActionResult AddComment(CommentAddModel comment)
         {
-            comment.UserId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value);
+            comment.UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value;
 
             var response = _commentService.AddComment(comment);
 

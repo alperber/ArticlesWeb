@@ -32,7 +32,7 @@ namespace ArticlesWeb.Business.Concrete
             try
             {
                 _repository.Add(newPost);
-                var response = _userService.IncrementPostCount(post.UserId ?? 0);
+                var response = _userService.IncrementPostCount(post.UserId);
 
                 if(response.Success)
                     return new SuccessResult(Messages.PostCreated);
@@ -50,7 +50,7 @@ namespace ArticlesWeb.Business.Concrete
             return new SuccessDataResult<List<Post>>(_repository.GetList());
         }
 
-        public IDataResult<List<Post>> GetPostsByUserId(int userId)
+        public IDataResult<List<Post>> GetPostsByUserId(string userId)
         {
             return new SuccessDataResult<List<Post>>(_repository.GetPostsWithUser(p => p.UserId == userId));
         }
@@ -61,18 +61,18 @@ namespace ArticlesWeb.Business.Concrete
                 _repository.GetPostsWithUser(p => p.User.Username == username));
         }
 
-        public IDataResult<Post> GetPostById(int postId)
+        public IDataResult<Post> GetPostById(string postId)
         {
             return new SuccessDataResult<Post>(_repository.GetPostWithUser(postId));
         }
 
-        public IResult IncrementCommentCount(int postId)
+        public IResult IncrementCommentCount(string postId)
         {
             _repository.IncrementCommentCount(postId);
             return new SuccessResult();
         }
 
-        public IResult DeletePostById(int postId)
+        public IResult DeletePostById(string postId)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace ArticlesWeb.Business.Concrete
 
                 var commentService = _serviceProvider.GetRequiredService<ICommentService>();
                 commentService.DeleteCommentsOnPost(postId);
-                _userService.DecrementPostCount(post.UserId ?? 0);
+                _userService.DecrementPostCount(post.UserId);
                 _repository.Delete(post);
                 return new SuccessResult(Messages.PostDeleted);
             }
@@ -100,13 +100,13 @@ namespace ArticlesWeb.Business.Concrete
             return new SuccessDataResult<List<Post>>(_repository.GetPostsWithUser());
         }
 
-        public IDataResult<Post> GetPostWithUser(int postId)
+        public IDataResult<Post> GetPostWithUser(string postId)
         {
             var data = _repository.GetPostWithUser(postId);
             return new SuccessDataResult<Post>(data);
         }
 
-        public IResult DeleteUserOwnedPosts(int userId)
+        public IResult DeleteUserOwnedPosts(string userId)
         {
             var posts = _repository.GetList(p => p.UserId == userId);
             if (posts.Count == 0)
@@ -122,7 +122,7 @@ namespace ArticlesWeb.Business.Concrete
             return new SuccessResult();
         }
 
-        public IResult DecrementCommentCount(int postId)
+        public IResult DecrementCommentCount(string postId)
         {
             _repository.DecrementCommentCount(postId);
             return new SuccessResult();

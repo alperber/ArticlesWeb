@@ -40,7 +40,7 @@ namespace ArticlesWeb.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteComment([Bind("postId, commentId")] int postId, int commentId)
+        public IActionResult DeleteComment([Bind("postId, commentId")] string postId, string commentId)
         {
             var response = _commentService.DeleteComment(commentId);
 
@@ -53,7 +53,7 @@ namespace ArticlesWeb.MVC.Controllers
         }
 
         [Route("/Admin/DeleteUser/{userId}")]
-        public IActionResult DeleteUser(int userId)
+        public IActionResult DeleteUser(string userId)
         {
             var response = _userService.DeleteUserById(userId);
 
@@ -63,7 +63,7 @@ namespace ArticlesWeb.MVC.Controllers
         }
 
         [Route("/Admin/DeletePost/{postId}")]
-        public IActionResult DeletePost(int postId)
+        public IActionResult DeletePost(string postId)
         {
             var response = _postService.DeletePostById(postId);
 

@@ -10,17 +10,20 @@ namespace ArticlesWeb.Business.Helpers
     {
         public static User CreateUser(UserRegisterModel user)
         {
+            var (hashedP, salt) = PasswordHasher.CreatePasswordHash(user.Password);
+            
             return new User()
             {
                 Username = user.Username,
-                Password = user.Password,
+                Password = hashedP,
+                PasswordSalt = salt,
                 Email = user.Email,
                 Fullname = user.Fullname,
                 Birthday = user.BirthDate,
                 PostCount = 0,
                 About = user.About,
                 RegistrationDate = DateTime.Now,
-                isAdmin = false
+                IsAdmin = false
             };
         }
         public static User UpdatedUser(UserUpdateModel user, User oldUser)
@@ -36,7 +39,7 @@ namespace ArticlesWeb.Business.Helpers
                 PostCount = oldUser.PostCount,
                 RegistrationDate = oldUser.RegistrationDate,
                 UserId = oldUser.UserId,
-                isAdmin = oldUser.isAdmin
+                IsAdmin = oldUser.IsAdmin
             };
         }
     }

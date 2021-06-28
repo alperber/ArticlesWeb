@@ -4,12 +4,12 @@
 @{
     bool isAdmin = false;
     string username = null;
-    int userId = 0;
+    string userId = null;
     if (User.Identity.IsAuthenticated)
     {
         username = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
 
-        userId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid)?.Value);
+        userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid)?.Value;
 
         var claims = User.Claims.Where(c => c.Type == ClaimTypes.Role);
         foreach (var claim in claims)

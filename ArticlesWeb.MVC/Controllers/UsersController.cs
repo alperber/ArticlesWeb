@@ -17,7 +17,7 @@ namespace ArticlesWeb.MVC.Controllers
         }
 
         [Route("Users/Details/{userId}")]
-        public IActionResult Details(int userId)
+        public IActionResult Details(string userId)
         {
             var response = _userService.GetUserDetailsById(userId);
 

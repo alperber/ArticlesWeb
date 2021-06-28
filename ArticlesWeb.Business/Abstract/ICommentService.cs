@@ -9,10 +9,10 @@ namespace ArticlesWeb.Business.Abstract
 {
     public interface ICommentService
     {
-        IDataResult<List<Comment>> GetCommentsByPostId(int postId);
+        IDataResult<List<Comment>> GetCommentsByPostId(string postId);
         public IResult AddComment(CommentAddModel comment);
-        IResult DeleteComment(int commentId);
-        IResult DeleteCommentsOnPost(int postId);
-        IResult DeleteUserComments(int userId);
+        IResult DeleteComment(string commentId);
+        IResult DeleteCommentsOnPost(string postId);
+        IResult DeleteUserComments(string userId);
     }
 }

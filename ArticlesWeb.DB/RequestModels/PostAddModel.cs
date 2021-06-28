@@ -7,7 +7,7 @@ namespace ArticlesWeb.Entities.RequestModels
 {
     public class PostAddModel
     {
-        public int? UserId { get; set; }
+        public string UserId { get; set; }
         [Required]
         [StringLength(100)]
         public string Title { get; set; }

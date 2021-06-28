@@ -7,8 +7,8 @@ namespace ArticlesWeb.Entities.RequestModels
 {
     public class CommentAddModel
     {
-        public int PostId { get; set; }
-        public int UserId { get; set; }
+        public string PostId { get; set; }
+        public string UserId { get; set; }
         [Required]
         [StringLength(100)]
         public string Text { get; set; }

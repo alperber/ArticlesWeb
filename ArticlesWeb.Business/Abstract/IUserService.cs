@@ -14,11 +14,11 @@ namespace ArticlesWeb.Business.Abstract
         IResult Register(UserRegisterModel user);
         Task<IResult> SignInAsync(UserLoginModel user, HttpContext httpContext);
         Task<IResult> SignOutAsync(HttpContext httpContext);
-        IDataResult<User> GetUserDetailsById(int userId);
+        IDataResult<User> GetUserDetailsById(string userId);
         IDataResult<User> GetUserDetailsByUsername(string username);
-        IResult DeleteUserById(int userId);
-        IResult IncrementPostCount(int userId);
-        IResult DecrementPostCount(int userId);
+        IResult DeleteUserById(string userId);
+        IResult IncrementPostCount(string userId);
+        IResult DecrementPostCount(string userId);
         IResult UpdateUser(UserUpdateModel user);
         IResult CheckIfEmailExists(string email);
         IResult CheckIfUsernameExists(string username);

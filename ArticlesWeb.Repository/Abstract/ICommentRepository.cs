@@ -9,6 +9,6 @@ namespace ArticlesWeb.Repository.Abstract
     public interface ICommentRepository : IRepository<Comment>
     {
         List<Comment> GetCommentsWithUser(Expression<Func<Comment, bool>> filterExpression = null);
-        void DeleteUserComments(int userId);
+        void DeleteUserComments(string userId);
     }
 }

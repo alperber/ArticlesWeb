@@ -15,38 +15,34 @@ namespace ArticlesWeb.Repository.Concrete
         {
         }
 
-        public bool IncrementPostCount(int userId)
+        public void IncrementPostCount(string userId)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
-
-            if (user == null)
-                return false;
-
+            
+            if (user == null) return;
+            
             user.PostCount += 1;
             _context.SaveChanges();
-            return true;
         }
 
-        public bool DecrementPostCount(int userId)
+        public void DecrementPostCount(string userId)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
-
-            if (user == null)
-                return false;
-
+            
+            if (user == null) return;
+            
             user.PostCount -= 1;
             _context.SaveChanges();
-            return true;
         }
 
-        public bool MakeAdmin(int userId)
+        public void UpdateRoleAsAdmin(string userId)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
-            if (user.isAdmin)
-                return false;
-
-            _context.SaveChanges();
-            return true;
+            
+            if (user is null || user.IsAdmin) return;
+           
+            user.IsAdmin = true;
+           _context.SaveChanges();
         }
     }
 }

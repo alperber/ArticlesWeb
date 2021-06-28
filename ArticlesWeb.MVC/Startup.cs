@@ -37,7 +37,7 @@ namespace ArticlesWeb.MVC
 
             services.AddDbContext<ArticlesContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

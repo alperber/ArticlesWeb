@@ -28,6 +28,8 @@ namespace ArticlesWeb.Business.Helpers
         }
         public static User UpdatedUser(UserUpdateModel user, User oldUser)
         {
+            var (newPass, newSalt) = PasswordHasher.CreatePasswordHash(user.Password);
+            
             return new User
             {
                 Username = user.Username,
@@ -35,7 +37,8 @@ namespace ArticlesWeb.Business.Helpers
                 Birthday = user.Birthday,
                 Email = user.Email,
                 Fullname = user.Fullname,
-                Password = user.Password,
+                Password = newPass,
+                PasswordSalt = newSalt,
                 PostCount = oldUser.PostCount,
                 RegistrationDate = oldUser.RegistrationDate,
                 UserId = oldUser.UserId,

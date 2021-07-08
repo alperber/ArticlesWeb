@@ -8,6 +8,7 @@ namespace ArticlesWeb.Repository
         public ArticlesContext(DbContextOptions options) : base(options)
         {
             this.ChangeTracker.AutoDetectChangesEnabled = false;
+            this.ChangeTracker.LazyLoadingEnabled = false;
             this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 

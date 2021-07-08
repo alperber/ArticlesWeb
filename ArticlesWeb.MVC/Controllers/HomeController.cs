@@ -102,7 +102,7 @@ namespace ArticlesWeb.MVC.Controllers
         [Authorize]
         public IActionResult EditProfile()
         {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value;
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)!.Value;
 
             var user = _userService.GetUserDetailsById(userId);
 
@@ -114,7 +114,7 @@ namespace ArticlesWeb.MVC.Controllers
         [HttpPost]
         public IActionResult EditProfile(UserUpdateModel user)
         {
-            user.UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value;
+            user.UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)!.Value;
 
             var response = _userService.UpdateUser(user);
 

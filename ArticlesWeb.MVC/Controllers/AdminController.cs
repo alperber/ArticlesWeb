@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ArticlesWeb.Business.Abstract;
+using ArticlesWeb.Entities.RequestModels;
 using Microsoft.AspNetCore.Authorization;
 
 namespace ArticlesWeb.MVC.Controllers
@@ -53,7 +55,7 @@ namespace ArticlesWeb.MVC.Controllers
         }
 
         [Route("/Admin/DeleteUser/{userId}")]
-        public IActionResult DeleteUser(string userId)
+        public IActionResult DeleteUser([FromRoute]string userId)
         {
             var response = _userService.DeleteUserById(userId);
 
@@ -72,5 +74,38 @@ namespace ArticlesWeb.MVC.Controllers
             return RedirectToAction(nameof(Posts));
         }
 
+        [HttpGet]
+        [Route("/Admin/UpdateUsersProfile/{userId}")]
+        public IActionResult UpdateUsersProfile(string userId)
+        {
+            var response = _userService.GetUserDetailsById(userId);
+
+            if (!response.Success)
+            {
+                return NotFound();
+            }
+            
+            return View(response.Data);
+        }
+        
+        [HttpPost]
+        [Route("/Admin/UpdateUsersProfile/{userId}")]
+        public IActionResult UpdateUsersProfile([FromRoute]string userId, [FromForm] UserUpdateModel model)
+        {
+            model.UserId = userId;
+
+            var response = _userService.UpdateUser(model);
+
+            if (!response.Success)
+            {
+                TempData["UpdateError"] = response.Message;
+                return RedirectToAction(nameof(UpdateUsersProfile));
+            }
+            
+            return RedirectToAction(nameof(UpdateUsersProfile), "Admin", new
+            {
+                userId
+            });
+        }
     }
 }

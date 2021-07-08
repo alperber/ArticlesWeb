@@ -14,7 +14,7 @@
 
     if (User.Identity.IsAuthenticated)
     {
-        var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value;
+        var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)!.Value;
         isSelfPage = currentUserId == userId;
     }
 
@@ -24,14 +24,14 @@
 <div>
     <div class="row">
         <div class="col-md-9">
-            <h1 style="color: orangered">@localizer["PersonalInformation"]</h1>
+            <h1 style="color: #0c5460;">@localizer["PersonalInformation"]</h1>
         </div>
         <div class="col-md-3">
             @{
                 if (isSelfPage)
                 {
                     <div style="font-size: 30px;">
-                        <a style="color: red" asp-controller="Home" asp-action="EditProfile">@localizer["EditProfile"]</a>
+                        <a style="color: red; font-weight: bold" asp-controller="Home" asp-action="EditProfile">@localizer["EditProfile"]</a>
                     </div>
                 }
             }
@@ -48,7 +48,7 @@
     @{
         if (!String.IsNullOrEmpty(Model.About))
         {
-            <h2 style="color: orangered">@localizer["Biography"]</h2>
+            <h2 style="color: #0c5460">@localizer["Biography"]</h2>
             <hr/>
             <p>@Model.About</p>
             <br/>
@@ -57,13 +57,13 @@
 </div>
 
 <div>
-    <h2 style="color: orangered">@localizer["UsersArticles"]</h2>
+    <h2 style="color: #0c5460">@localizer["UsersArticles"]</h2>
     @{
         if (posts.Data.Count == 0)
         {
             <hr />
-            <div class="alert alert-info">
-                <h2>@localizer["UserDoesntHaveArticle"]</h2>
+            <div style="color: gray !important;" class="alert alert-info">
+                <h6>@localizer["UserDoesntHaveArticle"]</h6>
             </div>
         }
         else

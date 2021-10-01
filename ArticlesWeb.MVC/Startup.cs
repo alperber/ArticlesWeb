@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ArticlesWeb.Business.Helpers;
+using ArticlesWeb.MVC.Utils;
+using System;
 
 namespace ArticlesWeb.MVC
 {
@@ -28,59 +30,21 @@ namespace ArticlesWeb.MVC
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<ArticlesContext>(options =>
-            {
-                options.UseNpgsql(Configuration.GetConnectionString("DevConnection"));
-            });
+            services.ConfigureDatabase(Configuration);
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/Home/Login";
-                });
+            services.AddServices();
+
+            services.AddCustomLocalization();
+
+            services.ConfigureAuthentication();
 
             services.AddHttpContextAccessor();
-
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUserService, UserService>();
-
-            services.AddScoped<IPostRepository, PostRepository>();
-            services.AddScoped<IPostService, PostService>();
-
-            services.AddScoped<ICommentRepository, CommentRepository>();
-            services.AddScoped<ICommentService, CommentService>();
-
-            services.AddSingleton<PasswordHasher>();
-
-            services.AddLocalization(options =>
-            {
-                options.ResourcesPath = "Resources";
-            });
-
-            services
-                .AddMvc()
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization();
-
-            services.Configure<RequestLocalizationOptions>(opt =>
-            {
-                var supportedCulture = new List<CultureInfo>
-                {
-                    new CultureInfo("en-US"),
-                    new CultureInfo("tr-TR")
-                };
-                opt.DefaultRequestCulture = new RequestCulture("en-US");
-                opt.SupportedCultures = supportedCulture;
-                opt.SupportedUICultures = supportedCulture;
-            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

@@ -19,13 +19,11 @@ namespace ArticlesWeb.Business.Concrete
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
-        private readonly IServiceProvider _serviceProvider;
         private readonly PasswordHasher _passwordHasher;
 
         public UserService(IUserRepository repository, IServiceProvider serviceProvider, PasswordHasher passwordHasher)
         {
             _repository = repository;
-            _serviceProvider = serviceProvider;
             _passwordHasher = passwordHasher;
         }
 
@@ -53,7 +51,7 @@ namespace ArticlesWeb.Business.Concrete
         {
             var result = _repository.Get(u => u.Username == user.Username);
 
-            if (result == null || !PasswordHasher.VerifyPasswordHash(user.Password, result.Password, result.PasswordSalt))
+            if (result == null || _passwordHasher.VerifyPasswordHash(user.Password, result.Password, result.PasswordSalt))
             {
                 return new ErrorResult(Messages.WrongInput);
             }

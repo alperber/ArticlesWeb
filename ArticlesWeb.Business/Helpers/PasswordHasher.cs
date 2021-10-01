@@ -4,9 +4,9 @@ using System.Text;
 
 namespace ArticlesWeb.Business.Helpers
 {
-    public static class PasswordHasher
+    public class PasswordHasher
     {
-        public static (string hPassword, string hSalt) CreatePasswordHash(string password)
+        public (string hPassword, string hSalt) CreatePasswordHash(string password)
         {
             byte[] passwordHash, passwordSalt;
             
@@ -21,7 +21,7 @@ namespace ArticlesWeb.Business.Helpers
             return (pass, salt);
         }
 
-        public static bool VerifyPasswordHash(string password, string passwordHash, string passwordSalt)
+        public bool VerifyPasswordHash(string password, string passwordHash, string passwordSalt)
         {
             var saltBytes = Convert.FromBase64String(passwordSalt);
             var passwordBytes = Convert.FromBase64String(passwordHash);

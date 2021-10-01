@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using ArticlesWeb.Business.Helpers;
 
 namespace ArticlesWeb.MVC
 {
@@ -53,6 +54,8 @@ namespace ArticlesWeb.MVC
 
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<ICommentService, CommentService>();
+
+            services.AddSingleton<PasswordHasher>();
 
             services.AddLocalization(options =>
             {

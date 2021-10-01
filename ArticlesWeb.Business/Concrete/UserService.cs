@@ -20,11 +20,13 @@ namespace ArticlesWeb.Business.Concrete
     {
         private readonly IUserRepository _repository;
         private readonly IServiceProvider _serviceProvider;
+        private readonly PasswordHasher _passwordHasher;
 
-        public UserService(IUserRepository repository, IServiceProvider serviceProvider)
+        public UserService(IUserRepository repository, IServiceProvider serviceProvider, PasswordHasher passwordHasher)
         {
             _repository = repository;
             _serviceProvider = serviceProvider;
+            _passwordHasher = passwordHasher;
         }
 
         public IResult Register(UserRegisterModel user)

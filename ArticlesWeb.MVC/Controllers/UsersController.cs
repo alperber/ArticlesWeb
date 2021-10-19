@@ -1,32 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using ArticlesWeb.Business.Abstract;
+using ArticlesWeb.MVC.Utils;
+using Microsoft.AspNetCore.Identity;
+using ArticlesWeb.MVC.Models.DbEntities;
+using AutoMapper;
 
 namespace ArticlesWeb.MVC.Controllers
 {
     public class UsersController : Controller
     {
-        private readonly IUserService _userService;
+        private readonly UserManager<User> _userManager;
+        private readonly IMapper _mapper;
 
-        public UsersController(IUserService userService)
+        public UsersController(UserManager<User> userManager, IMapper mapper)
         {
-            _userService = userService;
+            _userManager = userManager;
+            _mapper = mapper;
         }
 
-        [Route("Users/Details/{userId}")]
-        public IActionResult Details(string userId)
+        [Route("Users/{userId}/Details")]
+        public async Task<IActionResult> Details(Guid userId)
         {
-            var response = _userService.GetUserDetailsById(userId);
+            var response = await _userManager.GetUserDetailsById(userId, _mapper);
 
-            if (!response.Success || response.Data == null)
-            {
-                return NotFound();
-            }
-
-            return View(response.Data);
+            return View(response);
         }
     }
 }

@@ -144,4 +144,11 @@
   <data name="Username" xml:space="preserve">
     <value>Kullanıcı Adı</value>
   </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>İsim</value>
+    <comment>FirstName</comment>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Soyisim</value>
+  </data>
 </root>

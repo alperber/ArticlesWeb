@@ -3,18 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Collections.Generic;
-using System.Globalization;
-using ArticlesWeb.Business.Abstract;
-using ArticlesWeb.Business.Concrete;
-using ArticlesWeb.Repository;
-using ArticlesWeb.Repository.Abstract;
-using ArticlesWeb.Repository.Concrete;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using ArticlesWeb.MVC.Utils;
+using ArticlesWeb.MVC.DataAccess;
+using ArticlesWeb.MVC.Services;
 
 namespace ArticlesWeb.MVC
 {
@@ -24,60 +16,19 @@ namespace ArticlesWeb.MVC
         {
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<ArticlesContext>(options =>
-            {
-                options.UseNpgsql(Configuration.GetConnectionString("DevConnection"));
-            });
-
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/Home/Login";
-                });
-
-            services.AddHttpContextAccessor();
-
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUserService, UserService>();
-
-            services.AddScoped<IPostRepository, PostRepository>();
-            services.AddScoped<IPostService, PostService>();
-
-            services.AddScoped<ICommentRepository, CommentRepository>();
-            services.AddScoped<ICommentService, CommentService>();
-
-            services.AddLocalization(options =>
-            {
-                options.ResourcesPath = "Resources";
-            });
-
-            services
-                .AddMvc()
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization();
-
-            services.Configure<RequestLocalizationOptions>(opt =>
-            {
-                var supportedCulture = new List<CultureInfo>
-                {
-                    new CultureInfo("en-US"),
-                    new CultureInfo("tr-TR")
-                };
-                opt.DefaultRequestCulture = new RequestCulture("en-US");
-                opt.SupportedCultures = supportedCulture;
-                opt.SupportedUICultures = supportedCulture;
-            });
+            services.ConfigureDatabase(Configuration)
+                .AddCustomIdentity(Configuration)
+                .AddRepositories()
+                .AddBusinessServices()
+                .AddCustomLocalization();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -88,9 +39,9 @@ namespace ArticlesWeb.MVC
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            
             app.UseStaticFiles();
-
-
+            
             app.UseRequestLocalization(app.ApplicationServices
                 .GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
@@ -101,9 +52,7 @@ namespace ArticlesWeb.MVC
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }

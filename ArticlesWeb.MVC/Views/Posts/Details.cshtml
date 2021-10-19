@@ -1,12 +1,10 @@
-﻿@using ArticlesWeb.Entities.DbEntities
-@using System.Security.Claims
-@model ArticlesWeb.Entities.DbEntities.Post
+﻿@model PostDetailedViewModel
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
-@inject ArticlesWeb.Business.Abstract.ICommentService CommentService
+@inject ICommentService CommentService
 @{
     Layout = "_Layout2";
 
-    var response = CommentService.GetCommentsByPostId(Model.PostId);
+    var response = await CommentService.GetCommentsByPostId(Model.Id);
 
     List<Comment> comments = null;
 
@@ -62,7 +60,7 @@
                 <div class="post-review">
                     <div class="post-subtitle">
                         <a style="color: red !important; font-weight: bold; font-size: 20px"
-                           asp-controller="Users" asp-action="Details" asp-route-userId="@comment.UserId">@comment.User.Username</a>
+                           asp-controller="Users" asp-action="Details" asp-route-userId="@comment.UserId">@comment.User.UserName</a>
                     </div>
                     <div class="row">
                         <div style="font-size: 30px" class="col-md-9">@comment.Text</div>
@@ -70,8 +68,8 @@
                         {
                             <div class="cold-md-3">
                                 <form asp-action="DeleteComment" asp-controller="Admin">
-                                    <input name="postId" value="@Model.PostId" type="hidden" />
-                                    <input name="commentId" value="@comment.CommentId" type="hidden" />
+                                    <input name="postId" value="@Model.Id" type="hidden" />
+                                    <input name="commentId" value="@comment.Id" type="hidden" />
                                     <button class="btn btn-danger" asp-controller="Admin" asp-action="DeleteComment">@localizer["DeleteComment"]</button>
                                 </form>
                             </div>
@@ -87,7 +85,7 @@
 </div>
 
 <form method="post" asp-controller="Posts" asp-action="AddComment">
-    <input type="hidden" name="PostId" value="@Model.PostId">
+    <input type="hidden" name="PostId" value="@Model.Id">
     <textarea rows="5" style="width: 1110px" name="Text"></textarea>
     <br />
     @{

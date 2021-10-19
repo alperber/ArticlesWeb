@@ -80,7 +80,7 @@
                                     <a class="nav-link" asp-controller="Users" asp-action="Details" asp-route-userId="@User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid)?.Value">@localizer["Hello"] @User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Home" asp-action="SignOut">@localizer["Logout"]</a>
+                                    <a class="nav-link" asp-controller="Home" asp-action="LogOut">@localizer["Logout"]</a>
                                 </li>
                             }
                         }

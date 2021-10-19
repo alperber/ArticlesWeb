@@ -254,8 +254,8 @@ header.masthead .post-heading .meta a {
   margin: 0 0 10px;
 }
 .devamini-oku {
-    margin-left: 10px;
-    color: brown;
+    /*margin-left: 10px;*/
+    color: #f00;
     font-weight: bold;
 }
 .post-preview > .post-meta {

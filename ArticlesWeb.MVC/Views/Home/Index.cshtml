@@ -1,5 +1,5 @@
 ﻿@using System.Security.Claims
-@model List<ArticlesWeb.Entities.DbEntities.Post>
+@model List<ArticlesWeb.MVC.Models.ResponseModels.PostSimpleViewModel>
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @{
     
@@ -22,7 +22,7 @@
                 {
                     <hr>
                     <div class="post-preview">
-                        <a href="/Posts/Details/@post.PostId">
+                        <a href="/Posts/@post.Id/Details">
                             <h2 class="post-title">
                                 @post.Title
                             </h2>
@@ -30,8 +30,8 @@
                         <h3 class="post-subtitle">
                             @if (post.Text.Length > 200)
                             {
-                                @post.Text.Substring(0, 200)
-                                <a href="/Posts/Details/@post.PostId" class="devamini-oku">@localizer["ReadMore"]</a>
+                                <div class="detailPost">@post.Text[0..200]</div>
+                                <a href="/Posts/Details/@post.Id" class="devamini-oku">@localizer["ReadMore"]</a>
                             }
                             else
                             {
@@ -40,8 +40,8 @@
                         </h3>
                         <p class="post-meta">
                             Posted by
-                            <a href="/Users/Details/@post.UserId">@post.User.Username</a>
-                            on @post.CreatedAt.ToShortDateString()
+                            <a asp-controller="Users" asp-action="Details" asp-route-userId="@post.User.Id">@post.User.UserName</a>
+                            on @post.CreatedAt!.Value.ToString("d")
                         </p>
                         <p class="post-meta">@post.CommentCount @localizer["Comment"]</p>
                     </div>
@@ -50,3 +50,14 @@
         }
     </div>
     </div>
+
+<style>
+    .detailPost{
+        display: inline;
+        font-size: 1.5rem;
+    }
+    
+    .devamini-oku{
+        font-size: 1.5rem;
+    }
+</style>

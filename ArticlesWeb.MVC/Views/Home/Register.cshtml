@@ -1,4 +1,4 @@
-﻿@model ArticlesWeb.Entities.RequestModels.UserRegisterModel
+﻿@model ArticlesWeb.MVC.Models.RequestModels.UserRegisterModel
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @{
     Layout = "_Layout2";
@@ -23,15 +23,19 @@
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
         <label>@localizer["Username"]</label>
-        <input asp-for="Username" type="text" class="form-control" name="Username" aria-describedby="emailHelp">
+        <input asp-for="UserName" type="text" class="form-control" name="UserName" aria-describedby="emailHelp">
     </div>
     <div class="form-group">
         <label>@localizer["Password"]</label>
         <input asp-for="Password" type="password" class="form-control" name="Password">
     </div>
     <div class="form-group">
-        <label>@localizer["Fullname"]</label>
-        <input asp-for="Fullname" type="text" class="form-control" name="Fullname">
+        <label>@localizer["FirstName"]</label>
+        <input asp-for="FirstName" type="text" class="form-control" name="FirstName">
+    </div>
+    <div class="form-group">
+        <label>@localizer["LastName"]</label>
+        <input asp-for="LastName" type="text" class="form-control" name="LastName">
     </div>
     <div class="form-group">
         <label>@localizer["Email"]</label>

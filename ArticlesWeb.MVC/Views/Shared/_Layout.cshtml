@@ -1,11 +1,9 @@
-﻿@using System.Security.Claims
-@using Microsoft.AspNetCore.Mvc.Localization
-@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
+﻿@inject IViewLocalizer localizer
 @{
     bool isAdmin = false;
     string username = null;
     string userId = null;
-    if (User.Identity.IsAuthenticated)
+    if (User.Identity!.IsAuthenticated)
     {
         username = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
 
@@ -85,7 +83,7 @@
                                 <a class="nav-link" href="Users/Details/@userId">@localizer["Hello"] @username</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Home" asp-action="SignOut">@localizer["Logout"]</a>
+                                <a class="nav-link" asp-controller="Home" asp-action="LogOut">@localizer["Logout"]</a>
                             </li>
                         }
                     }

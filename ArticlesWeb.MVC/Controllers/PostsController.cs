@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using ArticlesWeb.Business.Abstract;
-using ArticlesWeb.Entities.RequestModels;
+using ArticlesWeb.MVC.Models.RequestModels;
+using ArticlesWeb.MVC.Utils;
 using Microsoft.AspNetCore.Authorization;
-using Newtonsoft.Json;
+using ArticlesWeb.MVC.Services.Abstract;
 
 namespace ArticlesWeb.MVC.Controllers
 {
@@ -22,10 +21,11 @@ namespace ArticlesWeb.MVC.Controllers
             _commentService = commentService;
         }
 
-        [Route("/Posts/Details/{postId}")]
-        public IActionResult Details(string postId)
+        [Route("/Posts/{postId}/Details")]
+        public async Task<IActionResult> Details(Guid postId)
         {
-            var response = _postService.GetPostById(postId);
+            var response = await _postService.GetPostById(postId);
+            
             if (response.Data == null || !response.Success)
             {
                 return RedirectToAction("Index", "Home");
@@ -43,27 +43,27 @@ namespace ArticlesWeb.MVC.Controllers
         [HttpPost]
         public IActionResult AddPost(PostAddModel post)
         {
-            post.UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value;
+            post.UserId = User.Claims.GetUserId();
             _postService.AddPost(post);
             return RedirectToAction("Index", "Home");
         }
 
-
-        // client-side'da ajax ile erişilecek
+        
         [Authorize]
         [HttpPost]
-        public IActionResult AddComment(CommentAddModel comment)
+        public async Task<IActionResult> AddComment(CommentAddModel comment)
         {
-            comment.UserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid).Value;
+            comment.UserId = User.Claims.GetUserId();
 
-            var response = _commentService.AddComment(comment);
+            var response = await _commentService.AddComment(comment);
 
             if (response.Success)
+            {
                 return RedirectToAction("Details", "Posts", new
                 {
                     postId = comment.PostId
                 });
-
+            }
             return RedirectToAction("Index", "Home");
         }
     }

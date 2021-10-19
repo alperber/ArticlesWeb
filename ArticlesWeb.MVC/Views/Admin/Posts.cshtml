@@ -1,5 +1,5 @@
 ﻿@using System.Globalization
-@model List<ArticlesWeb.Entities.DbEntities.Post>
+@model List<ArticlesWeb.MVC.Models.ResponseModels.PostSimpleViewModel>
 @{
     Layout = "_LayoutAdmin";
 
@@ -30,10 +30,10 @@
     {
         <tr>
             <td>@post.Title</td>
-            <td>@post.User.Username</td>
+            <td>@post.User.UserName</td>
             <td>@post.User.Email</td>
             <td>@post.CommentCount</td>
-            <td>@post.CreatedAt.ToString(CultureInfo.InvariantCulture)</td>
+            <td>@post.CreatedAt.ToString()</td>
         </tr>
     }
     </tbody>

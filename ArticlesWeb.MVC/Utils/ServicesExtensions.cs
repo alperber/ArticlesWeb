@@ -1,13 +1,6 @@
-﻿using ArticlesWeb.Business.Abstract;
-using ArticlesWeb.Business.Concrete;
-using ArticlesWeb.Business.Helpers;
-using ArticlesWeb.Repository;
-using ArticlesWeb.Repository.Abstract;
-using ArticlesWeb.Repository.Concrete;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,28 +8,14 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Microsoft.AspNetCore.Identity;
+using ArticlesWeb.MVC.DataAccess;
+using ArticlesWeb.MVC.Models.DbEntities;
 
 namespace ArticlesWeb.MVC.Utils
 {
     public static class ServicesExtensions
     {
-        public static IServiceCollection AddServices(this IServiceCollection services)
-        {
-
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUserService, UserService>();
-
-            services.AddScoped<IPostRepository, PostRepository>();
-            services.AddScoped<IPostService, PostService>();
-
-            services.AddScoped<ICommentRepository, CommentRepository>();
-            services.AddScoped<ICommentService, CommentService>();
-
-            services.AddSingleton<PasswordHasher>();
-
-            return services;
-        }
-
         public static IServiceCollection 
             ConfigureDatabase(this IServiceCollection services,
                                    IConfiguration configuration)
@@ -76,16 +55,42 @@ namespace ArticlesWeb.MVC.Utils
             return services;
         }
 
-        public static IServiceCollection ConfigureAuthentication(this IServiceCollection services)
+        public static IServiceCollection AddCustomIdentity(
+            this IServiceCollection services, 
+            IConfiguration configuration)
         {
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/Home/Login";
-                    options.ExpireTimeSpan = TimeSpan.FromHours(1);
-                });
+            services.Configure<IdentityOptions>(configuration.GetSection("IdentityOptions"));
+            
+            services.AddAuthentication(o =>
+            {
+                o.DefaultScheme = IdentityConstants.ApplicationScheme;
+                o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+            })
+            .AddIdentityCookies();
+
+            services.AddIdentityCore<User>()
+                .AddSignInManager()
+                .AddEntityFrameworkStores<ArticlesContext>();
+
+
+            var hour = configuration["CookieOptions:ExpireHour"].ToInt32();
+            var slidingExpiration = bool.Parse(configuration["CookieOptions:SlidingExpiration"]);
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromHours(hour);
+                
+                options.LoginPath = configuration["CookieOptions:LoginPath"];
+                
+                options.AccessDeniedPath = configuration["CookieOptions:AccessDeniedPath"];
+
+                options.SlidingExpiration = slidingExpiration;
+            });
 
             return services;
         }
+        
+        public static int ToInt32(this string @string) => Int32.Parse(@string);
     }
 }

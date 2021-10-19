@@ -1,23 +1,21 @@
-﻿@using System.Security.Claims
-@model ArticlesWeb.Entities.DbEntities.User
-@inject ArticlesWeb.Business.Abstract.IPostService PostService
+﻿@model UserViewModel
+@inject IPostService PostService
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @{
     Layout = "_Layout2";
 
-    var userId = Model.UserId;
+    var userId = Model.Id;
 
-    var posts = PostService.GetPostsByUserId(userId);
+    var posts = await PostService.GetPostsByUserId(userId);
 
 
     bool isSelfPage = false;
 
     if (User.Identity.IsAuthenticated)
     {
-        var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)!.Value;
+        var currentUserId = User.Claims.GetUserId();
         isSelfPage = currentUserId == userId;
     }
-
 }
 
 
@@ -38,9 +36,9 @@
         </div>
     </div>
     <hr/>
-    <p>@localizer["Username"] : @Model.Username</p>
+    <p>@localizer["Username"] : @Model.UserName</p>
     <p>@localizer["Email"] : @Model.Email</p>
-    <p>@localizer["Birthday"] : @Model.Birthday</p>
+    <p>@localizer["Birthday"] : @Model.BirthDate</p>
     <p>@localizer["RegistrationDate"]: @Model.RegistrationDate</p>
     <br />
     
@@ -72,7 +70,7 @@
             {
                 <hr>
                 <div class="post-preview">
-                    <a href="/Posts/Details/@post.PostId">
+                    <a href="/Posts/@post.Id/Details">
                         <h2 class="post-title">
                             @post.Title
                         </h2>
@@ -81,7 +79,7 @@
                         @if (post.Text.Length > 200)
                         {
                             @post.Text.Substring(0, 200)
-                        <a href="/Posts/Details/@post.PostId" class="devamini-oku">@localizer["ReadMore"]</a>
+                        <a href="/Posts/Details/@post.Id" class="devamini-oku">@localizer["ReadMore"]</a>
                         }
                         else
                         {
@@ -90,8 +88,8 @@
                     </h3>
                     <p class="post-meta">
                         Posted by
-                        <a href="/Users/Details/@post.UserId">@post.User.Username</a>
-                        on @post.CreatedAt.ToShortDateString()
+                        <a href="/Users/@post.UserId/Details">@post.User.UserName</a>
+                        on @post.CreatedAt!.Value.ToString("d")
                     </p>
                     <p class="post-meta">@post.CommentCount @localizer["Comment"]</p>
                 </div>

@@ -1,27 +1,34 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using ArticlesWeb.Business.Abstract;
-using ArticlesWeb.Entities.RequestModels;
+using ArticlesWeb.MVC.Utils;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using ArticlesWeb.MVC.Services.Abstract;
+using ArticlesWeb.MVC.Models.DbEntities;
+using ArticlesWeb.MVC.Models.RequestModels;
+using AutoMapper;
 
 namespace ArticlesWeb.MVC.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        private readonly IUserService _userService;
         private readonly IPostService _postService;
         private readonly ICommentService _commentService;
+        private readonly UserManager<User> _userManager;
+        private readonly IMapper _mapper;
 
-        public AdminController(IUserService userService, IPostService postService, ICommentService commentService)
+        public AdminController(IPostService postService, 
+            ICommentService commentService,
+            UserManager<User> userManager, 
+            IMapper mapper)
         {
-            _userService = userService;
             _postService = postService;
             _commentService = commentService;
+            _userManager = userManager;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -29,45 +36,46 @@ namespace ArticlesWeb.MVC.Controllers
             return RedirectToAction(nameof(Users));
         }
 
-        public IActionResult Users()
+        public async Task<IActionResult> Users()
         {
-            var response = _userService.GetAllUsers();
-            return View(response.Data);
+            var response = await _userManager.GetAllUsers();
+            return View(response);
         }
-        public IActionResult Posts()
+        public async Task<IActionResult> Posts()
         {
-            var response = _postService.GetAllPostsWithUser();
+            var response = await _postService.GetAllPostsWithUser();
 
             return View(response.Data);
         }
 
         [HttpPost]
-        public IActionResult DeleteComment([Bind("postId, commentId")] string postId, string commentId)
+        public async Task<IActionResult> DeleteComment([Bind("postId, commentId")] Guid postId, Guid commentId)
         {
-            var response = _commentService.DeleteComment(commentId);
+            var response = await _commentService.DeleteComment(commentId);
 
             TempData["Message"] = response.Message;
 
             return RedirectToAction("Details", "Posts", new
             {
-                postId = postId
+                postId
             });
         }
 
         [Route("/Admin/DeleteUser/{userId}")]
-        public IActionResult DeleteUser([FromRoute]string userId)
+        public async Task<IActionResult> DeleteUser([FromRoute]Guid userId)
         {
-            var response = _userService.DeleteUserById(userId);
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var response = await _userManager.DeleteAsync(user);
 
-            TempData["Message"] = response.Message;
+            TempData["Message"] = response.Errors.First().Description;
 
             return RedirectToAction(nameof(Users));
         }
 
         [Route("/Admin/DeletePost/{postId}")]
-        public IActionResult DeletePost(string postId)
+        public async Task<IActionResult> DeletePost(Guid postId)
         {
-            var response = _postService.DeletePostById(postId);
+            var response = await _postService.DeletePostById(postId);
 
             TempData["Message"] = response.Message;
 
@@ -76,29 +84,24 @@ namespace ArticlesWeb.MVC.Controllers
 
         [HttpGet]
         [Route("/Admin/UpdateUsersProfile/{userId}")]
-        public IActionResult UpdateUsersProfile(string userId)
+        public async Task<IActionResult> UpdateUsersProfile(Guid userId)
         {
-            var response = _userService.GetUserDetailsById(userId);
-
-            if (!response.Success)
-            {
-                return NotFound();
-            }
+            var response = await _userManager.GetUserDetailsById(userId, _mapper);
             
-            return View(response.Data);
+            return View(response);
         }
         
         [HttpPost]
         [Route("/Admin/UpdateUsersProfile/{userId}")]
-        public IActionResult UpdateUsersProfile([FromRoute]string userId, [FromForm] UserUpdateModel model)
+        public async Task<IActionResult> UpdateUsersProfile([FromRoute]Guid userId, [FromForm] UserUpdateModel model)
         {
-            model.UserId = userId;
+            var updatedUser = _mapper.Map<User>(model);
 
-            var response = _userService.UpdateUser(model);
+            var response = await _userManager.UpdateAsync(updatedUser);
 
-            if (!response.Success)
+            if (!response.Succeeded)
             {
-                TempData["UpdateError"] = response.Message;
+                TempData["UpdateError"] = response.Errors.First().ToString();
                 return RedirectToAction(nameof(UpdateUsersProfile));
             }
             

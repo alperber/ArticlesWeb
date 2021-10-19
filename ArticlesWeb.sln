@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArticlesWeb.Entities", "ArticlesWeb.DB\ArticlesWeb.Entities.csproj", "{F5ED0021-8B3A-4426-97B7-DF31E724B4E9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArticlesWeb.Repository", "ArticlesWeb.Repository\ArticlesWeb.Repository.csproj", "{E13EFF96-57C3-4F04-9B7D-F89F981B1ACD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArticlesWeb.Business", "ArticlesWeb.Business\ArticlesWeb.Business.csproj", "{922F508A-5EE1-4EE8-AB16-F1ACBC96684D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArticlesWeb.MVC", "ArticlesWeb.MVC\ArticlesWeb.MVC.csproj", "{628EC3BE-2AEF-45D7-9ED1-B5D0DA4A73A9}"
 EndProject
 Global

@@ -1,13 +1,12 @@
-﻿@using System.Security.Claims
-@model List<ArticlesWeb.Entities.DbEntities.User>
+﻿@model IList<User>
 @{
     Layout = "_LayoutAdmin";
     
-    var currentUserId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid)!.Value;
-    var currentUser = Model.FirstOrDefault(u => u.UserId == currentUserId);
+    var currentUserId = User.Claims.GetUserId();
+    var currentUser = Model.FirstOrDefault(u => u.Id == currentUserId);
     Model.Remove(currentUser);
 
-    string message = TempData.ContainsKey("Message") ? TempData["Message"] as string : null;
+    var message = TempData.ContainsKey("Message") ? TempData["Message"] as string : null;
 }
 
 @{
@@ -34,12 +33,12 @@
     @foreach (var user in Model)
     { 
         <tr>
-            <td>@user.Username</td>
-            <td>@user.Fullname</td>
+            <td>@user.UserName</td>
+            <td>@user.FullName</td>
             <td>@user.Email</td>
-            <td>@user.Birthday</td>
-            <td><a class="btn btn-primary" href="@Url.Action("UpdateUsersProfile","Admin", new { userId = @user.UserId })">Düzenle</a></td>
-            <td><a class="btn btn-danger" href="@Url.Action("DeleteUser","Admin", new { userId = @user.UserId })">Sil</a></td>
+            <td>@user.BirthDate</td>
+            <td><a class="btn btn-primary" href="@Url.Action("UpdateUsersProfile","Admin", new { userId = @user.Id })">Düzenle</a></td>
+            <td><a class="btn btn-danger" href="@Url.Action("DeleteUser","Admin", new { userId = @user.Id })">Sil</a></td>
         </tr>
     }
     </tbody>

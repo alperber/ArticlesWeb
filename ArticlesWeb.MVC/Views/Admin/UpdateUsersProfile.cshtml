@@ -1,8 +1,8 @@
-﻿@model ArticlesWeb.Entities.DbEntities.User
+﻿@model UserViewModel
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer
 @{
     Layout = "_Layout2";
-    DateTime bd = Model?.Birthday ?? DateTime.Now;
+    var bd = Model?.BirthDate ?? DateTimeOffset.Now;
 
     string message = null;
 
@@ -45,13 +45,13 @@
                         <div class="col-6">
                             <div class="input-group">
                                 <label class="label">@localizer["Username"]</label>
-                                <input class="input--style-4" type="text" value="@Model.Username" name="Username">
+                                <input class="input--style-4" type="text" value="@Model.UserName" name="Username">
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="input-group">
                                 <label class="label">@localizer["Password"]</label>
-                                <input class="input--style-4" type="password" value="@Model.Password" name="Password">
+                                <input class="input--style-4" type="password" name="Password">
                             </div>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                             <div class="input-group">
                                 <label class="label">@localizer["Birthday"]</label>
                                 <div class="input-group-icon">
-                                    <input class="input--style-4 js-datepicker" value="@bd.ToShortDateString()" type="text" name="Birthday">
+                                    <input class="input--style-4 js-datepicker" value="@bd.ToString("d")" type="text" name="Birthday">
                                     @*<i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>*@
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
                         <div class="col-6">
                             <div class="input-group">
                                 <label class="label">@localizer["Fullname"]</label>
-                                <input class="input--style-4" value="@Model.Fullname" type="text" name="Fullname">
+                                <input class="input--style-4" value="@Model.FullName" type="text" name="Fullname">
                             </div>
                         </div>
                     </div>

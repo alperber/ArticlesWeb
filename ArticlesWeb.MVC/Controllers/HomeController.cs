@@ -22,16 +22,14 @@ namespace ArticlesWeb.MVC.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly IPostService _postService;
-        private readonly IStringLocalizer<HomeController> _localizer;
         private readonly IMapper _mapper;
 
         public HomeController(
-            IPostService postService, 
-            IStringLocalizer<HomeController> localizer, 
-            SignInManager<User> signInManager, UserManager<User> userManager, IMapper mapper)
+            IPostService postService,
+            SignInManager<User> signInManager, 
+            UserManager<User> userManager, IMapper mapper)
         {
             _postService = postService;
-            _localizer = localizer;
             _signInManager = signInManager;
             _userManager = userManager;
             _mapper = mapper;
@@ -79,7 +77,9 @@ namespace ArticlesWeb.MVC.Controllers
             {
                 return View(user);
             }
-            var response = await _signInManager.SignInWithPasswordAsync(user);
+
+            var response = await _signInManager.SignIn(user, _mapper);
+            
             if (response.Success)
             {
                 return RedirectToAction(nameof(Index));
@@ -116,7 +116,7 @@ namespace ArticlesWeb.MVC.Controllers
 
             // TODO map userdto to user 
             // TODO create extension method for update user
-            // TODO will update method change all properties????
+            // will update method change all properties????
             var mappedUser = new User { };
             var response = await _userManager.UpdateAsync(mappedUser);
             var t = await _userManager.ChangePasswordAsync(mappedUser, user.Password, " ");

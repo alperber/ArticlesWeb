@@ -13,6 +13,7 @@ namespace ArticlesWeb.MVC.Services
             CreateMap<CommentAddModel, Comment>();
             CreateMap<User, SimpleUserModel>();
             CreateMap<UserUpdateModel, User>();
+            CreateMap<UserLoginModel, User>();
             CreateMap<Post, PostSimpleViewModel>();
             CreateMap<Post, PostDetailedViewModel>();
             CreateMap<User, UserViewModel>();

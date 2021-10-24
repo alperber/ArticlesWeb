@@ -92,7 +92,7 @@ namespace ArticlesWeb.MVC.Controllers
         }
         
         [HttpPost]
-        [Route("/Admin/UpdateUsersProfile/{userId}")]
+        [Route("/Admin/UpdateUsersProfile/{userId:guid}")]
         public async Task<IActionResult> UpdateUsersProfile([FromRoute]Guid userId, [FromForm] UserUpdateModel model)
         {
             var updatedUser = _mapper.Map<User>(model);

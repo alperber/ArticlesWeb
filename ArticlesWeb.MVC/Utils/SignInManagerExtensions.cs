@@ -5,20 +5,32 @@ using System.Threading.Tasks;
 using ArticlesWeb.Business.Results;
 using ArticlesWeb.MVC.Models.DbEntities;
 using ArticlesWeb.MVC.Models.RequestModels;
+using ArticlesWeb.MVC.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 
 namespace ArticlesWeb.MVC.Utils
 {
     public static class SignInManagerExtensions
     {
-        public static async Task<IResult> SignInWithPasswordAsync(this SignInManager<User> manager, UserLoginModel user)
+        public static async Task<IResult> SignIn(this SignInManager<User> manager, 
+            UserLoginModel user,
+            IMapper mapper)
         {
-            await Task.Delay(1000);
-            // check user if exist 
+            var dbUser = await manager.UserManager.FindByEmailAsync(user.Email);
             
-            // check admin for claim
+            if (dbUser is null)
+            {
+                return new ErrorResult(Messages.WrongInput);
+            }
+
+            var roles = new List<Claim> { new Claim(ClaimTypes.Role, "User") };
+
+            if (dbUser.IsAdmin) roles.Add(new Claim(ClaimTypes.Role, "Admin"));
             
-            // signin with claims
+
+            await manager.SignInWithClaimsAsync(dbUser, false, roles);
+            
             return new SuccessResult();
         }
         public static async Task<IResult> RegisterAsync(this SignInManager<User> manager, UserRegisterModel model)

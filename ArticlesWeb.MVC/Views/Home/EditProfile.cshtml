@@ -49,27 +49,25 @@
                             </div>
                         </div>
                         <div class="col-6">
-                            <div class="input-group">
-                                <label class="label">@localizer["Password"]</label>
-                                @* TODO password handling *@
-                                <input class="input--style-4" type="password" @* value="@Model.Password" *@ name="Password">
+                            <div class="input-group-icon">
+                                <label class="label">@localizer["Birthday"]</label>
+                                <input class="input--style-4 js-datepicker" value="@bd.ToString("d")" type="text" name="Birthday">
                             </div>
                         </div>
                     </div>
                     <div class="row row-space">
                         <div class="col-6">
                             <div class="input-group">
-                                <label class="label">@localizer["Birthday"]</label>
+                                <label class="label">@localizer["FirstName"]</label>
                                 <div class="input-group-icon">
-                                    <input class="input--style-4 js-datepicker" value="@bd.ToString()" type="text" name="Birthday">
-                                    @*<i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>*@
+                                    <input class="input--style-4 js-datepicker" value="@Model.FirstName" type="text" name="Birthday">
                                 </div>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="input-group">
-                                <label class="label">@localizer["Fullname"]</label>
-                                <input class="input--style-4" value="@Model.FullName" type="text" name="Fullname">
+                                <label class="label">@localizer["LastName"]</label>
+                                <input class="input--style-4" value="@Model.LastName" type="text" name="Fullname">
                             </div>
                         </div>
                     </div>

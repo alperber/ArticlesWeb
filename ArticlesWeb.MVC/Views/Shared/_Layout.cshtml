@@ -2,12 +2,12 @@
 @{
     bool isAdmin = false;
     string username = null;
-    string userId = null;
+    Guid userId = Guid.Empty;
     if (User.Identity!.IsAuthenticated)
     {
         username = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
 
-        userId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Sid)?.Value;
+        userId = User.Claims.GetUserId();
 
         var claims = User.Claims.Where(c => c.Type == ClaimTypes.Role);
         foreach (var claim in claims)
@@ -80,7 +80,7 @@
                                 <a class="nav-link" asp-controller="Posts" asp-action="AddPost">@localizer["ShareArticle"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="Users/Details/@userId">@localizer["Hello"] @username</a>
+                                <a class="nav-link" asp-controller="Users" asp-action="Details" asp-route-userId="@userId">@localizer["Hello"] @username</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Home" asp-action="LogOut">@localizer["Logout"]</a>
